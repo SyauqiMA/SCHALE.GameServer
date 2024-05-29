@@ -12,7 +12,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public Raid(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public Raid(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -24,8 +30,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var raidSeasonExcel = excelTableService.GetTable<RaidSeasonManageExcelTable>().UnPack().DataList;
-            var targetSeason = raidSeasonExcel.FirstOrDefault(x => x.SeasonId == account.RaidInfo.SeasonId);
+            var raidSeasonExcel = excelTableService
+                .GetTable<RaidSeasonManageExcelTable>()
+                .UnPack()
+                .DataList;
+            var targetSeason = raidSeasonExcel.FirstOrDefault(x =>
+                x.SeasonId == account.RaidInfo.SeasonId
+            );
 
             return new RaidLobbyResponse()
             {
@@ -45,14 +56,24 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             context.Entry(account).Property(x => x.RaidInfo).IsModified = true; // force update
             context.SaveChanges();
 
-            var raid = RaidManager.Instance.CreateRaid(account.RaidInfo, account.ServerId, account.Nickname, req.IsPractice, req.RaidUniqueId);
-            var battle = RaidManager.Instance.CreateBattle(account.ServerId, account.Nickname, req.RaidUniqueId);
+            var raid = RaidManager.Instance.CreateRaid(
+                account.RaidInfo,
+                account.ServerId,
+                account.Nickname,
+                req.IsPractice,
+                req.RaidUniqueId
+            );
+            var battle = RaidManager.Instance.CreateBattle(
+                account.ServerId,
+                account.Nickname,
+                req.RaidUniqueId
+            );
 
             return new RaidCreateBattleResponse()
             {
                 RaidDB = raid,
                 RaidBattleDB = battle,
-                AssistCharacterDB = new () { }
+                AssistCharacterDB = new() { }
             };
         }
 
@@ -75,16 +96,27 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var raidStageTable = excelTableService.GetTable<RaidStageExcelTable>().UnPack().DataList;
-            var currentRaidData = raidStageTable.FirstOrDefault(x => x.Id == account.RaidInfo.CurrentRaidUniqueId);
+            var raidStageTable = excelTableService
+                .GetTable<RaidStageExcelTable>()
+                .UnPack()
+                .DataList;
+            var currentRaidData = raidStageTable.FirstOrDefault(x =>
+                x.Id == account.RaidInfo.CurrentRaidUniqueId
+            );
 
-            var timeScore = RaidManager.CalculateTimeScore(req.Summary.ElapsedRealtime, account.RaidInfo.CurrentDifficulty);
+            var timeScore = RaidManager.CalculateTimeScore(
+                req.Summary.ElapsedRealtime,
+                account.RaidInfo.CurrentDifficulty
+            );
             var hpPercentScorePoint = currentRaidData.HPPercentScore;
             var defaultClearPoint = currentRaidData.DefaultClearScore;
 
             var rankingPoint = timeScore + hpPercentScorePoint + defaultClearPoint;
 
-            account.RaidInfo.BestRankingPoint = rankingPoint > account.RaidInfo.BestRankingPoint ? rankingPoint : account.RaidInfo.BestRankingPoint;
+            account.RaidInfo.BestRankingPoint =
+                rankingPoint > account.RaidInfo.BestRankingPoint
+                    ? rankingPoint
+                    : account.RaidInfo.BestRankingPoint;
             account.RaidInfo.TotalRankingPoint += rankingPoint;
             context.Entry(account).Property(x => x.RaidInfo).IsModified = true; // force update
             context.SaveChanges();
@@ -92,9 +124,10 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             // saving battle result to continue on next attempt doesn't work
             var battle = RaidManager.Instance.RaidBattleDB;
             var bossResult = req.Summary.RaidSummary.RaidBossResults.FirstOrDefault();
+            var damageResult = bossResult.RaidDamage;
 
-            battle.CurrentBossHP = bossResult.EndHpRateRawValue;
-            battle.CurrentBossGroggy = bossResult.GroggyRateRawValue;
+            battle.CurrentBossHP -= damageResult.GivenDamage;
+            battle.CurrentBossGroggy = damageResult.GivenGroggyPoint;
             battle.CurrentBossAIPhase = bossResult.AIPhase;
             battle.SubPartsHPs = bossResult.SubPartsHPs;
 
@@ -111,10 +144,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         [ProtocolHandler(Protocol.Raid_OpponentList)]
         public ResponsePacket OpponentListHandler(RaidOpponentListRequest req)
         {
-            return new RaidOpponentListResponse()
-            {
-                OpponentUserDBs = []
-            };
+            return new RaidOpponentListResponse() { OpponentUserDBs = [] };
         }
     }
 }
