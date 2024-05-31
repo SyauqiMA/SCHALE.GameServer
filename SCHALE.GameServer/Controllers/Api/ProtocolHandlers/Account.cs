@@ -212,9 +212,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                         LeaderSkillLevel = x.LeaderSkillLevel,
                         IsNew = true,
                         IsLocked = true,
-                        EquipmentServerIds = characterExcel is not null
-                            ? characterExcel.EquipmentSlot.Select(x => (long)0).ToList()
-                            : [0, 0, 0],
+                        EquipmentServerIds = [0, 0, 0],
                         PotentialStats =
                         {
                             { 1, 0 },
