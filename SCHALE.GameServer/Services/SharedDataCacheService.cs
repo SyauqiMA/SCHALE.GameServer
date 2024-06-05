@@ -21,13 +21,16 @@ namespace SCHALE.GameServer.Services
         public IReadOnlyList<CharacterExcelT> CharaListR => _charaListR;
         public IReadOnlyList<CharacterExcelT> CharaListSR => _charaListSR;
         public IReadOnlyList<CharacterExcelT> CharaListSSR => _charaListSSR;
-        public IReadOnlyList<CharacterExcelT> CharaListRNormal=> _charaListRNormal;
-        public IReadOnlyList<CharacterExcelT> CharaListSRNormal=> _charaListSRNormal;
-        public IReadOnlyList<CharacterExcelT> CharaListSSRNormal=> _charaListSSRNormal;
+        public IReadOnlyList<CharacterExcelT> CharaListRNormal => _charaListRNormal;
+        public IReadOnlyList<CharacterExcelT> CharaListSRNormal => _charaListSRNormal;
+        public IReadOnlyList<CharacterExcelT> CharaListSSRNormal => _charaListSSRNormal;
         public IReadOnlyList<CharacterExcelT> CharaListUnique => _charaListUnique;
         public IReadOnlyList<CharacterExcelT> CharaListEvent => _charaListEvent;
 
-        public SharedDataCacheService(ILogger<SharedDataCacheService> logger, ExcelTableService excelTable)
+        public SharedDataCacheService(
+            ILogger<SharedDataCacheService> logger,
+            ExcelTableService excelTable
+        )
         {
             _logger = logger;
             _excelTable = excelTable;
@@ -35,24 +38,35 @@ namespace SCHALE.GameServer.Services
             _charaList = excelTable
                 .GetTable<CharacterExcelTable>()
                 .UnPack()
-                .DataList!
-                .Where(x => x is
-                {
-                    IsPlayable: true,
-                    IsPlayableCharacter: true,
-                    IsDummy: false,
-                    IsNPC: false,
-                    ProductionStep: ProductionStep.Release,
-                })
+                .DataList!.Where(x =>
+                    x
+                        is {
+                            IsPlayable: true,
+                            IsPlayableCharacter: true,
+                            IsDummy: false,
+                            IsNPC: false,
+                            ProductionStep: ProductionStep.Release,
+                        }
+                )
                 .ToList();
             _charaListR = _charaList.Where(x => x.Rarity == Rarity.R).ToList();
             _charaListSR = _charaList.Where(x => x.Rarity == Rarity.SR).ToList();
             _charaListSSR = _charaList.Where(x => x.Rarity == Rarity.SSR).ToList();
-            _charaListRNormal = _charaListR.Where(x => x.GetStudentType() == StudentType.Normal).ToList();
-            _charaListSRNormal = _charaListSR.Where(x => x.GetStudentType() == StudentType.Normal).ToList();
-            _charaListSSRNormal = _charaListSSR.Where(x => x.GetStudentType() == StudentType.Normal).ToList();
-            _charaListUnique = _charaListR.Where(x => x.GetStudentType() == StudentType.Unique).ToList();
-            _charaListEvent = _charaListR.Where(x => x.GetStudentType() == StudentType.Event).ToList();
+            _charaListRNormal = _charaListR
+                .Where(x => x.GetStudentType() == StudentType.Normal)
+                .ToList();
+            _charaListSRNormal = _charaListSR
+                .Where(x => x.GetStudentType() == StudentType.Normal)
+                .ToList();
+            _charaListSSRNormal = _charaListSSR
+                .Where(x => x.GetStudentType() == StudentType.Normal)
+                .ToList();
+            _charaListUnique = _charaListR
+                .Where(x => x.GetStudentType() == StudentType.Unique)
+                .ToList();
+            _charaListEvent = _charaListR
+                .Where(x => x.GetStudentType() == StudentType.Event)
+                .ToList();
         }
     }
 

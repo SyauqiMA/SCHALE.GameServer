@@ -1,8 +1,8 @@
-﻿using SCHALE.Common.Database;
+﻿using System.Reflection;
+using SCHALE.Common.Database;
 using SCHALE.Common.NetworkProtocol;
 using SCHALE.GameServer.Services;
 using Serilog;
-using System.Reflection;
 
 namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 {
@@ -33,7 +33,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
         public ProtocolHandlerFactory()
         {
-            foreach (var requestPacketType in Assembly.GetAssembly(typeof(RequestPacket))!.GetTypes().Where(x => x.IsAssignableTo(typeof(RequestPacket))))
+            foreach (
+                var requestPacketType in Assembly
+                    .GetAssembly(typeof(RequestPacket))!
+                    .GetTypes()
+                    .Where(x => x.IsAssignableTo(typeof(RequestPacket)))
+            )
             {
                 if (requestPacketType == typeof(RequestPacket))
                     continue;
@@ -52,7 +57,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             handlerInstances.Add(t, inst);
 
-            foreach (var method in t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Where(x => x.GetCustomAttribute<ProtocolHandlerAttribute>() is not null))
+            foreach (
+                var method in t.GetMethods(
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                    )
+                    .Where(x => x.GetCustomAttribute<ProtocolHandlerAttribute>() is not null)
+            )
             {
                 var attr = method.GetCustomAttribute<ProtocolHandlerAttribute>()!;
                 if (handlers.ContainsKey(attr.Protocol))
@@ -116,12 +126,16 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             services.AddSingleton<IProtocolHandlerFactory, ProtocolHandlerFactory>();
         }
 
-        public static void AddProtocolHandlerGroup<T>(this IServiceCollection services) where T : ProtocolHandlerBase
+        public static void AddProtocolHandlerGroup<T>(this IServiceCollection services)
+            where T : ProtocolHandlerBase
         {
             services.AddHostedService<T>();
         }
 
-        public static void AddProtocolHandlerGroupByType(this IServiceCollection services, Type type)
+        public static void AddProtocolHandlerGroupByType(
+            this IServiceCollection services,
+            Type type
+        )
         {
             services.AddTransient(typeof(IHostedService), type);
         }

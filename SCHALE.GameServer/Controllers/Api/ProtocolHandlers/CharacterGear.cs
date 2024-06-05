@@ -12,7 +12,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public CharacterGear(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public CharacterGear(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -24,10 +30,17 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var gearExcelTable = excelTableService.GetTable<CharacterGearExcelTable>().UnPack().DataList;
-            var targetCharacter = account.Characters.FirstOrDefault(x => x.ServerId == req.CharacterServerId);
+            var gearExcelTable = excelTableService
+                .GetTable<CharacterGearExcelTable>()
+                .UnPack()
+                .DataList;
+            var targetCharacter = account.Characters.FirstOrDefault(x =>
+                x.ServerId == req.CharacterServerId
+            );
 
-            var gearId = gearExcelTable.FirstOrDefault(x => x.CharacterId == targetCharacter.UniqueId).Id;
+            var gearId = gearExcelTable
+                .FirstOrDefault(x => x.CharacterId == targetCharacter.UniqueId)
+                .Id;
 
             var newGear = new GearDB()
             {
@@ -51,16 +64,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
         [ProtocolHandler(Protocol.CharacterGear_TierUp)]
         public ResponsePacket TierUpHandler(CharacterGearTierUpRequest req)
-        {   // doesnt work
+        { // doesnt work
             var targetGear = context.Gears.FirstOrDefault(x => x.ServerId == req.GearServerId);
 
             targetGear.Tier++;
             context.SaveChanges();
 
-            return new CharacterGearTierUpResponse()
-            {
-                GearDB = targetGear,
-            };
+            return new CharacterGearTierUpResponse() { GearDB = targetGear, };
         }
     }
 }

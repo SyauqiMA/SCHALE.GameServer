@@ -1,11 +1,11 @@
-﻿using SCHALE.Common.Database;
+﻿using System;
+using System.Data;
+using SCHALE.Common.Database;
 using SCHALE.Common.Database.ModelExtensions;
 using SCHALE.Common.FlatData;
 using SCHALE.Common.Migrations;
 using SCHALE.GameServer.Services;
 using SCHALE.GameServer.Services.Irc;
-using System;
-using System.Data;
 
 namespace SCHALE.Common.Utils
 {
@@ -16,16 +16,22 @@ namespace SCHALE.Common.Utils
             var account = connection.Account;
             var context = connection.Context;
 
-            var characterExcel = connection.ExcelTableService.GetTable<CharacterExcelTable>().UnPack().DataList;
-            var allCharacters = characterExcel.Where(x =>
-                x is
-                {
-                    IsPlayable: true,
-                    IsPlayableCharacter: true,
-                    IsNPC: false,
-                    ProductionStep: ProductionStep.Release,
-                }
-            ).Select(x => CreateMaxCharacterFromId(x.Id)).ToList();
+            var characterExcel = connection
+                .ExcelTableService.GetTable<CharacterExcelTable>()
+                .UnPack()
+                .DataList;
+            var allCharacters = characterExcel
+                .Where(x =>
+                    x
+                        is {
+                            IsPlayable: true,
+                            IsPlayableCharacter: true,
+                            IsNPC: false,
+                            ProductionStep: ProductionStep.Release,
+                        }
+                )
+                .Select(x => CreateMaxCharacterFromId(x.Id))
+                .ToList();
 
             account.AddCharacters(context, [.. allCharacters]);
             context.SaveChanges();
@@ -35,16 +41,21 @@ namespace SCHALE.Common.Utils
 
         public static void AddAllEquipment(IrcConnection connection)
         {
-            var equipmentExcel = connection.ExcelTableService.GetTable<EquipmentExcelTable>().UnPack().DataList;
-            var allEquipment = equipmentExcel.Select(x =>
-            {
-                return new EquipmentDB()
+            var equipmentExcel = connection
+                .ExcelTableService.GetTable<EquipmentExcelTable>()
+                .UnPack()
+                .DataList;
+            var allEquipment = equipmentExcel
+                .Select(x =>
                 {
-                    UniqueId = x.Id,
-                    Level = 1,
-                    StackCount = 77777, // ~ 90,000 cap, auto converted if over
-                };
-            }).ToList();
+                    return new EquipmentDB()
+                    {
+                        UniqueId = x.Id,
+                        Level = 1,
+                        StackCount = 77777, // ~ 90,000 cap, auto converted if over
+                    };
+                })
+                .ToList();
 
             connection.Account.AddEquipment(connection.Context, [.. allEquipment]);
             connection.Context.SaveChanges();
@@ -54,16 +65,21 @@ namespace SCHALE.Common.Utils
 
         public static void AddAllItems(IrcConnection connection)
         {
-            var itemExcel = connection.ExcelTableService.GetTable<ItemExcelTable>().UnPack().DataList;
-            var allItems = itemExcel.Select(x =>
-            {
-                return new ItemDB()
+            var itemExcel = connection
+                .ExcelTableService.GetTable<ItemExcelTable>()
+                .UnPack()
+                .DataList;
+            var allItems = itemExcel
+                .Select(x =>
                 {
-                    IsNew = true,
-                    UniqueId = x.Id,
-                    StackCount = 1000,
-                };
-            }).ToList();
+                    return new ItemDB()
+                    {
+                        IsNew = true,
+                        UniqueId = x.Id,
+                        StackCount = 1000,
+                    };
+                })
+                .ToList();
 
             connection.Account.AddItems(connection.Context, [.. allItems]);
             connection.Context.SaveChanges();
@@ -100,17 +116,24 @@ namespace SCHALE.Common.Utils
             var account = connection.Account;
             var context = connection.Context;
 
-            var gearExcel = connection.ExcelTableService.GetTable<CharacterGearExcelTable>().UnPack().DataList;
+            var gearExcel = connection
+                .ExcelTableService.GetTable<CharacterGearExcelTable>()
+                .UnPack()
+                .DataList;
 
-            var allGears = gearExcel.Where(x => x.Tier == 2 && context.Characters.Any(y => y.UniqueId == x.CharacterId)).Select(x => new GearDB()
-            {
-                UniqueId = x.Id,
-                Level = 1,
-                SlotIndex = 4,
-                BoundCharacterServerId = context.Characters.FirstOrDefault(z => z.UniqueId == x.CharacterId).ServerId,
-                Tier = 2,
-                Exp = 0,
-            });
+            var allGears = gearExcel
+                .Where(x => x.Tier == 2 && context.Characters.Any(y => y.UniqueId == x.CharacterId))
+                .Select(x => new GearDB()
+                {
+                    UniqueId = x.Id,
+                    Level = 1,
+                    SlotIndex = 4,
+                    BoundCharacterServerId = context
+                        .Characters.FirstOrDefault(z => z.UniqueId == x.CharacterId)
+                        .ServerId,
+                    Tier = 2,
+                    Exp = 0,
+                });
 
             account.AddGears(context, [.. allGears]);
             context.SaveChanges();
@@ -123,14 +146,16 @@ namespace SCHALE.Common.Utils
             var account = connection.Account;
             var context = connection.Context;
 
-            var memoryLobbyExcel = connection.ExcelTableService.GetTable<MemoryLobbyExcelTable>().UnPack().DataList;
-            var allMemoryLobbies = memoryLobbyExcel.Select(x =>
-            {
-                return new MemoryLobbyDB()
+            var memoryLobbyExcel = connection
+                .ExcelTableService.GetTable<MemoryLobbyExcelTable>()
+                .UnPack()
+                .DataList;
+            var allMemoryLobbies = memoryLobbyExcel
+                .Select(x =>
                 {
-                    MemoryLobbyUniqueId = x.Id,
-                };
-            }).ToList();
+                    return new MemoryLobbyDB() { MemoryLobbyUniqueId = x.Id, };
+                })
+                .ToList();
 
             account.AddMemoryLobbies(context, [.. allMemoryLobbies]);
             context.SaveChanges();
@@ -143,14 +168,16 @@ namespace SCHALE.Common.Utils
             var account = connection.Account;
             var context = connection.Context;
 
-            var scenarioModeExcel = connection.ExcelTableService.GetTable<ScenarioModeExcelTable>().UnPack().DataList;
-            var allScenarios = scenarioModeExcel.Select(x =>
-            {
-                return new ScenarioHistoryDB()
+            var scenarioModeExcel = connection
+                .ExcelTableService.GetTable<ScenarioModeExcelTable>()
+                .UnPack()
+                .DataList;
+            var allScenarios = scenarioModeExcel
+                .Select(x =>
                 {
-                    ScenarioUniqueId = x.ModeId,
-                };
-            }).ToList();
+                    return new ScenarioHistoryDB() { ScenarioUniqueId = x.ModeId, };
+                })
+                .ToList();
 
             account.AddScenarios(context, [.. allScenarios]);
             context.SaveChanges();
@@ -161,9 +188,16 @@ namespace SCHALE.Common.Utils
         public static void RemoveAllCharacters(IrcConnection connection) // removing default characters breaks game
         {
             var characterDB = connection.Context.Characters;
-            var defaultCharacters = connection.ExcelTableService.GetTable<DefaultCharacterExcelTable>().UnPack().DataList.Select(x => x.CharacterId).ToList();
+            var defaultCharacters = connection
+                .ExcelTableService.GetTable<DefaultCharacterExcelTable>()
+                .UnPack()
+                .DataList.Select(x => x.CharacterId)
+                .ToList();
 
-            var removed = characterDB.Where(x => x.AccountServerId == connection.AccountServerId && !defaultCharacters.Contains(x.UniqueId));
+            var removed = characterDB.Where(x =>
+                x.AccountServerId == connection.AccountServerId
+                && !defaultCharacters.Contains(x.UniqueId)
+            );
 
             characterDB.RemoveRange(removed);
 
@@ -186,7 +220,12 @@ namespace SCHALE.Common.Utils
                 FavorRank = 20,
                 IsNew = true,
                 IsLocked = true,
-                PotentialStats = { { 1, 0 }, { 2, 0 }, { 3, 0 } },
+                PotentialStats =
+                {
+                    { 1, 0 },
+                    { 2, 0 },
+                    { 3, 0 }
+                },
                 EquipmentServerIds = [0, 0, 0]
             };
         }

@@ -10,11 +10,14 @@ namespace SCHALE.GameServer.Managers
     {
         public SingleRaidLobbyInfoDB RaidLobbyInfoDB { get; private set; }
 
-        public RaidDB RaidDB {  get; private set; }
+        public RaidDB RaidDB { get; private set; }
 
         public RaidBattleDB RaidBattleDB { get; private set; }
 
-        public SingleRaidLobbyInfoDB GetLobby(RaidInfo raidInfo, RaidSeasonManageExcelT targetSeasonData)
+        public SingleRaidLobbyInfoDB GetLobby(
+            RaidInfo raidInfo,
+            RaidSeasonManageExcelT targetSeasonData
+        )
         {
             if (RaidLobbyInfoDB == null || RaidLobbyInfoDB.SeasonId != raidInfo.SeasonId)
             {
@@ -31,8 +34,7 @@ namespace SCHALE.GameServer.Managers
                         { targetSeasonData.OpenRaidBossGroup.FirstOrDefault(), Difficulty.Torment }
                     }
                 };
-            } 
-            
+            }
             else
             {
                 RaidLobbyInfoDB.BestRankingPoint = raidInfo.BestRankingPoint;
@@ -42,17 +44,19 @@ namespace SCHALE.GameServer.Managers
             return RaidLobbyInfoDB;
         }
 
-        public RaidDB CreateRaid(RaidInfo raidInfo, long ownerId, string ownerNickname, bool isPractice, long raidId)
+        public RaidDB CreateRaid(
+            RaidInfo raidInfo,
+            long ownerId,
+            string ownerNickname,
+            bool isPractice,
+            long raidId
+        )
         {
             if (RaidDB == null)
             {
                 RaidDB = new()
                 {
-                    Owner = new()
-                    {
-                        AccountId = ownerId,
-                        AccountName = ownerNickname,
-                    },
+                    Owner = new() { AccountId = ownerId, AccountName = ownerNickname, },
 
                     ContentType = ContentType.Raid,
                     UniqueId = raidId,
@@ -60,15 +64,12 @@ namespace SCHALE.GameServer.Managers
                     RaidState = RaidStatus.Playing,
                     IsPractice = isPractice,
                     BossDifficulty = raidInfo.CurrentDifficulty,
-                    RaidBossDBs = [
-                        new() {
-                            ContentType = ContentType.Raid,
-                            BossCurrentHP = long.MaxValue
-                        }
+                    RaidBossDBs =
+                    [
+                        new() { ContentType = ContentType.Raid, BossCurrentHP = long.MaxValue }
                     ],
                 };
             }
-
             else
             {
                 RaidDB.BossDifficulty = raidInfo.CurrentDifficulty;
@@ -88,15 +89,9 @@ namespace SCHALE.GameServer.Managers
                     ContentType = ContentType.Raid,
                     RaidUniqueId = raidId,
                     CurrentBossHP = long.MaxValue,
-                    RaidMembers = [
-                        new() {
-                            AccountId = ownerId,
-                            AccountName = ownerNickname,
-                        }
-                    ]
+                    RaidMembers = [new() { AccountId = ownerId, AccountName = ownerNickname, }]
                 };
             }
-
             else
             {
                 RaidBattleDB.RaidUniqueId = raidId;

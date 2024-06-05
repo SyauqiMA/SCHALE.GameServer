@@ -8,7 +8,11 @@ namespace SCHALE.GameServer.Services.Irc
     {
         private IrcServer server;
 
-        public IrcService(ILogger<IrcService> _logger, SCHALEContext _context, ExcelTableService excelTableService)
+        public IrcService(
+            ILogger<IrcService> _logger,
+            SCHALEContext _context,
+            ExcelTableService excelTableService
+        )
         {
             server = new IrcServer(IPAddress.Any, 6667, _logger, _context, excelTableService);
         }

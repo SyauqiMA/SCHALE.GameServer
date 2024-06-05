@@ -4,7 +4,8 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 {
     public class Queuing : ProtocolHandlerBase
     {
-        public Queuing(IProtocolHandlerFactory protocolHandlerFactory) : base(protocolHandlerFactory) { }
+        public Queuing(IProtocolHandlerFactory protocolHandlerFactory)
+            : base(protocolHandlerFactory) { }
 
         [ProtocolHandler(Protocol.Queuing_GetTicket)]
         public ResponsePacket GetTicketHandler(QueuingGetTicketRequest req)

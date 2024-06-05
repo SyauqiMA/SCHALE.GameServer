@@ -9,7 +9,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private ISessionKeyService sessionKeyService;
         private SCHALEContext context;
 
-        public EventContent(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context) : base(protocolHandlerFactory)
+        public EventContent(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -18,11 +23,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         [ProtocolHandler(Protocol.EventContent_CollectionList)]
         public ResponsePacket CollectionListHandler(EventContentCollectionListRequest req)
         {
-
-            return new EventContentCollectionListResponse()
-            {
-
-            };
+            return new EventContentCollectionListResponse() { };
         }
     }
 }

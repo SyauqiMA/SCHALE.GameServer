@@ -500,9 +500,10 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             return new AccountSetTutorialResponse();
         }
 
-
         [ProtocolHandler(Protocol.Account_SetRepresentCharacterAndComment)]
-        public ResponsePacket SetRepresentCharacterAndCommentHandler(AccountSetRepresentCharacterAndCommentRequest req)
+        public ResponsePacket SetRepresentCharacterAndCommentHandler(
+            AccountSetRepresentCharacterAndCommentRequest req
+        )
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
@@ -514,7 +515,9 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             return new AccountSetRepresentCharacterAndCommentResponse()
             {
                 AccountDB = account,
-                RepresentCharacterDB = account.Characters.FirstOrDefault(x => x.ServerId == req.RepresentCharacterServerId)
+                RepresentCharacterDB = account.Characters.FirstOrDefault(x =>
+                    x.ServerId == req.RepresentCharacterServerId
+                )
             };
         }
 
@@ -618,7 +621,5 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             return new FriendGetIdCardResponse();
         }
-
-        
     }
 }

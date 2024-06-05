@@ -18,11 +18,7 @@ namespace SCHALE.GameServer.Controllers
         [HttpGet("agreement")]
         public IResult Agreement([FromQuery] string version = "v0.0")
         {
-            return Results.Json(new UserAgreementResponse()
-            {
-                Version = version,
-                Data = []
-            });
+            return Results.Json(new UserAgreementResponse() { Version = version, Data = [] });
         }
 
         [HttpPost("create")]
@@ -47,30 +43,35 @@ namespace SCHALE.GameServer.Controllers
         }
 
         [HttpPost("login")]
-        public IResult Login([FromForm] uint uid, [FromForm] string token, [FromForm] string storeId)
+        public IResult Login(
+            [FromForm] uint uid,
+            [FromForm] string token,
+            [FromForm] string storeId
+        )
         {
-            var account = context.GuestAccounts.SingleOrDefault(x => x.Uid == uid && x.Token == token);
+            var account = context.GuestAccounts.SingleOrDefault(x =>
+                x.Uid == uid && x.Token == token
+            );
             if (account is not null)
             {
-                return Results.Json(new UserLoginResponse()
-                {
-                    AccessToken = account.Token,
-                    Birth = null,
-                    ChannelId = storeId,
-                    CurrentTimestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-                    KrKmcStatus = 2,
-                    Result = 0,
-                    Transcode = "NULL",
-                    Check7Until = 0,
-                    Migrated = false,
-                    ShowMigratePage = false
-                });
+                return Results.Json(
+                    new UserLoginResponse()
+                    {
+                        AccessToken = account.Token,
+                        Birth = null,
+                        ChannelId = storeId,
+                        CurrentTimestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                        KrKmcStatus = 2,
+                        Result = 0,
+                        Transcode = "NULL",
+                        Check7Until = 0,
+                        Migrated = false,
+                        ShowMigratePage = false
+                    }
+                );
             }
 
-            return Results.Json(new
-            {
-                result = 1
-            });
+            return Results.Json(new { result = 1 });
         }
     }
 }

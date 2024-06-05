@@ -12,7 +12,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public Scenario(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public Scenario(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -36,7 +42,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             return new ScenarioGroupHistoryUpdateResponse();
         }
-        
+
         [ProtocolHandler(Protocol.Scenario_LobbyStudentChange)]
         public ResponsePacket LobbyStudentChangeHandler(ScenarioLobbyStudentChangeRequest req)
         {
@@ -54,7 +60,9 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var scenario = account.Scenarios.FirstOrDefault(x => x.ScenarioUniqueId == req.ScenarioId);
+            var scenario = account.Scenarios.FirstOrDefault(x =>
+                x.ScenarioUniqueId == req.ScenarioId
+            );
 
             if (scenario == null)
             {
@@ -68,10 +76,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 context.SaveChanges();
             }
 
-            return new ScenarioClearResponse()
-            {
-                ScenarioHistoryDB = scenario
-            };
+            return new ScenarioClearResponse() { ScenarioHistoryDB = scenario };
         }
     }
 }

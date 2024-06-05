@@ -10,7 +10,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly ISessionKeyService sessionKeyService;
         private readonly SCHALEContext context;
 
-        public Mission(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context) : base(protocolHandlerFactory)
+        public Mission(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -27,12 +32,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             Log.Debug($"MissionListRequest EventContentId: {req.EventContentId}");
 
-            var missionProgresses = context.MissionProgresses.Where(x => x.AccountServerId == sessionKeyService.GetAccount(req.SessionKey).ServerId).ToList();
+            var missionProgresses = context
+                .MissionProgresses.Where(x =>
+                    x.AccountServerId == sessionKeyService.GetAccount(req.SessionKey).ServerId
+                )
+                .ToList();
 
-            return new MissionListResponse
-            {
-                ProgressDBs = missionProgresses
-            };
+            return new MissionListResponse { ProgressDBs = missionProgresses };
         }
 
         [ProtocolHandler(Protocol.Mission_GuideMissionSeasonList)]

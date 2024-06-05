@@ -34,8 +34,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
             var newEchelon = req.EchelonDB;
-            var existingEchelon = context.Echelons.FirstOrDefault(e => e.AccountServerId == newEchelon.AccountServerId && e.EchelonType == newEchelon.EchelonType &&
-                                                                    e.EchelonNumber == newEchelon.EchelonNumber && e.ExtensionType == newEchelon.ExtensionType);
+            var existingEchelon = context.Echelons.FirstOrDefault(e =>
+                e.AccountServerId == newEchelon.AccountServerId
+                && e.EchelonType == newEchelon.EchelonType
+                && e.EchelonNumber == newEchelon.EchelonNumber
+                && e.ExtensionType == newEchelon.ExtensionType
+            );
 
             if (existingEchelon != null)
             {
@@ -45,7 +49,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
             account.AddEchelons(context, [newEchelon]);
             context.SaveChanges();
-            
+
             return new EchelonSaveResponse() { EchelonDB = req.EchelonDB, };
         }
     }

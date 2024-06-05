@@ -9,7 +9,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private ISessionKeyService sessionKeyService;
         private SCHALEContext context;
 
-        public Item(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context) : base(protocolHandlerFactory)
+        public Item(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -20,19 +25,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            return new ItemListResponse()
-            {
-                ItemDBs = [.. account.Items],
-                ExpiryItemDBs = []
-            };
+            return new ItemListResponse() { ItemDBs = [.. account.Items], ExpiryItemDBs = [] };
         }
 
         [ProtocolHandler(Protocol.Item_AutoSynth)]
         public ResponsePacket AutoSynthHandler(ItemAutoSynthRequest req)
         {
-            return new ItemAutoSynthResponse()
-            {
-            };
+            return new ItemAutoSynthResponse() { };
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace SCHALE.GameServer.Utils
 {
-    public abstract class Singleton<T> where T : new()
+    public abstract class Singleton<T>
+        where T : new()
     {
         static T instance;
         public static T Instance

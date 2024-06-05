@@ -11,7 +11,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public Clan(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public Clan(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -50,8 +56,10 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                     ClanSocialGrade = Common.FlatData.ClanSocialGrade.Member,
                     AccountNickName = account.Nickname
                 },
-                ClanMemberDBs = [
-                    new() {
+                ClanMemberDBs =
+                [
+                    new()
+                    {
                         AccountId = account.ServerId,
                         AccountLevel = account.Level,
                         ClanDBId = 777,
@@ -59,13 +67,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                         AttendanceCount = 33,
                         ClanSocialGrade = Common.FlatData.ClanSocialGrade.Member,
                         AccountNickName = account.Nickname,
-                        AttachmentDB = new() {
+                        AttachmentDB = new()
+                        {
                             AccountId = account.ServerId,
                             EmblemUniqueId = 123123
                         }
                     }
                 ],
-                
             };
         }
 
@@ -80,8 +88,10 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             return new ClanAllAssistListResponse()
             {
-                AssistCharacterDBs = [
-                    new() {
+                AssistCharacterDBs =
+                [
+                    new()
+                    {
                         AccountId = 1,
                         AssistCharacterServerId = 1,
                         EchelonType = Common.FlatData.EchelonType.Raid,
@@ -95,7 +105,5 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 AssistCharacterRentHistoryDBs = []
             };
         }
-
-        
     }
 }

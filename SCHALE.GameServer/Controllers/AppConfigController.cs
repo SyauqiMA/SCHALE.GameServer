@@ -9,10 +9,7 @@ namespace SCHALE.GameServer.Controllers
         [Route("client_info")]
         public IResult ClientInfo()
         {
-            return Results.Json(new
-            {
-                result = 0
-            });
+            return Results.Json(new { result = 0 });
         }
 
         [Route("getSettings")]
@@ -20,7 +17,8 @@ namespace SCHALE.GameServer.Controllers
         {
             Response.ContentType = "application/json";
 
-            return Results.Text(@"{
+            return Results.Text(
+                @"{
     ""settings"": {
         ""APP_ANDROIDKEY"": ""MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhV/4Nvy/YuMRlBncn7Qac70zomF74qWAKIDiTKGiuMrNjIAkD3ijNuhNVYhklV8gVEP5XkAZIGF8SXlIS0SYDwFhE7LwsHtKr42rDj1m9XG9y3CEnOilmfJZ4bFKIBI46a+2EsjDB1fxDdh2PqNvq5oRVU9/KDJKTmBXDSjeHob3UKbQRgSiKdwv4/QQLv1bm3qbQJhPhgGjWZm8/aQIw0hy561dcY82u/ioESeDZjRgnOtL62ufmt9Xq2hecXMmSasqX2dojxdJrL19YXFuCXV+YSe6ElovwCo+Qy9a4bPstjS4BG0VEcL7iw72kJGsQZq48drgz/vZGeH9DbhXmQIDAQAB"",
         ""ADJUST_ENABLED"": 0,
@@ -54,7 +52,8 @@ namespace SCHALE.GameServer.Controllers
         ""GEETEST_FORCECHECK"": 0
     },
     ""EuropeUnion"": false
-}");
+}"
+            );
         }
 
         [Route("getCode")]
@@ -62,7 +61,8 @@ namespace SCHALE.GameServer.Controllers
         {
             Response.ContentType = "application/json";
 
-            return Results.Text(@"{
+            return Results.Text(
+                @"{
     ""result"": 0,
     ""data"": [
         {
@@ -458,7 +458,8 @@ namespace SCHALE.GameServer.Controllers
             ""codemessage"": ""Interface parameter error. Invoke failed""
         }
     ]
-}");
+}"
+            );
         }
     }
 }

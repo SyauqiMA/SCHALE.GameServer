@@ -1,17 +1,19 @@
-﻿using SCHALE.Common.Database;
-using SCHALE.GameServer.Commands;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using SCHALE.Common.Database;
+using SCHALE.GameServer.Commands;
 
 namespace SCHALE.GameServer.Services.Irc
 {
     public class IrcServer
     {
-        private ConcurrentDictionary<TcpClient, IrcConnection> clients = new ConcurrentDictionary<TcpClient, IrcConnection>(); // most irc commands doesn't even send over the player uid so imma just use TcpClient as key
-        private ConcurrentDictionary<string, List<long>> channels = new ConcurrentDictionary<string, List<long>>();
+        private ConcurrentDictionary<TcpClient, IrcConnection> clients =
+            new ConcurrentDictionary<TcpClient, IrcConnection>(); // most irc commands doesn't even send over the player uid so imma just use TcpClient as key
+        private ConcurrentDictionary<string, List<long>> channels =
+            new ConcurrentDictionary<string, List<long>>();
 
         private readonly TcpListener listener;
 
@@ -19,7 +21,13 @@ namespace SCHALE.GameServer.Services.Irc
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public IrcServer(IPAddress host, int port, ILogger<IrcService> _logger, SCHALEContext _context, ExcelTableService _excelTableService)
+        public IrcServer(
+            IPAddress host,
+            int port,
+            ILogger<IrcService> _logger,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
         {
             logger = _logger;
             context = _context;
@@ -151,7 +159,7 @@ namespace SCHALE.GameServer.Services.Irc
             //logger.LogDebug("payload: " + payloadStr);
 
             var payload = JsonSerializer.Deserialize(payloadStr, typeof(IrcMessage)) as IrcMessage;
-            
+
             if (payload.Text.StartsWith('/'))
             {
                 var cmdStrings = payload.Text.Split(" ");
@@ -161,8 +169,11 @@ namespace SCHALE.GameServer.Services.Irc
 
                 try
                 {
-                    Command? cmd = CommandFactory.CreateCommand(cmdStr, connection, cmdStrings[1..]);
-
+                    Command? cmd = CommandFactory.CreateCommand(
+                        cmdStr,
+                        connection,
+                        cmdStrings[1..]
+                    );
 
                     if (cmd is null)
                     {
@@ -171,13 +182,21 @@ namespace SCHALE.GameServer.Services.Irc
                     }
 
                     cmd?.Execute();
-                    connection.SendChatMessage($"Command {cmdStr} executed sucessfully! Please relog for it to take effect.");
+                    connection.SendChatMessage(
+                        $"Command {cmdStr} executed sucessfully! Please relog for it to take effect."
+                    );
                 }
                 catch (Exception ex)
                 {
-                    var cmdAtr = (CommandHandlerAttribute?)Attribute.GetCustomAttribute(CommandFactory.commands[cmdStr], typeof(CommandHandlerAttribute));
+                    var cmdAtr = (CommandHandlerAttribute?)
+                        Attribute.GetCustomAttribute(
+                            CommandFactory.commands[cmdStr],
+                            typeof(CommandHandlerAttribute)
+                        );
 
-                    connection.SendChatMessage($"Command {cmdStr} failed to execute!, " + ex.Message);
+                    connection.SendChatMessage(
+                        $"Command {cmdStr} failed to execute!, " + ex.Message
+                    );
                     connection.SendChatMessage($"Usage: {cmdAtr.Usage}");
                 }
             }
@@ -215,7 +234,7 @@ namespace SCHALE.GameServer.Services.Irc
     {
         [JsonPropertyName("MessageType")]
         public IrcMessageType MessageType { get; set; }
-        
+
         [JsonPropertyName("CharacterId")]
         public long CharacterId { get; set; }
 

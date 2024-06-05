@@ -1,7 +1,7 @@
-﻿using SCHALE.GameServer.Services.Irc;
-using Serilog;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
+using SCHALE.GameServer.Services.Irc;
+using Serilog;
 
 namespace SCHALE.GameServer.Commands
 {
@@ -23,14 +23,31 @@ namespace SCHALE.GameServer.Commands
 
         public string? Validate()
         {
-            List<PropertyInfo> argsProperties = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(x => x.GetCustomAttribute(typeof(ArgumentAttribute)) is not null).ToList();
-            if (argsProperties.Where(x => (((ArgumentAttribute)x.GetCustomAttribute(typeof(ArgumentAttribute))!).Flags & ArgumentFlags.Optional) != ArgumentFlags.Optional).Count() > args.Length)
+            List<PropertyInfo> argsProperties = GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(x => x.GetCustomAttribute(typeof(ArgumentAttribute)) is not null)
+                .ToList();
+            if (
+                argsProperties
+                    .Where(x =>
+                        (
+                            (
+                                (ArgumentAttribute)x.GetCustomAttribute(typeof(ArgumentAttribute))!
+                            ).Flags & ArgumentFlags.Optional
+                        ) != ArgumentFlags.Optional
+                    )
+                    .Count() > args.Length
+            )
                 return "Invalid args length!";
 
             foreach (var argProp in argsProperties)
             {
-                ArgumentAttribute attr = (ArgumentAttribute)argProp.GetCustomAttribute(typeof(ArgumentAttribute))!;
-                if (attr.Position + 1 > args.Length && (attr.Flags & ArgumentFlags.Optional) != ArgumentFlags.Optional)
+                ArgumentAttribute attr = (ArgumentAttribute)
+                    argProp.GetCustomAttribute(typeof(ArgumentAttribute))!;
+                if (
+                    attr.Position + 1 > args.Length
+                    && (attr.Flags & ArgumentFlags.Optional) != ArgumentFlags.Optional
+                )
                     return $"Argument {argProp.Name} is required!";
                 else if (attr.Position + 1 > args.Length)
                     return null;
@@ -54,7 +71,12 @@ namespace SCHALE.GameServer.Commands
         public string? Description { get; }
         public ArgumentFlags Flags { get; }
 
-        public ArgumentAttribute(int position, string pattern, string? description = null, ArgumentFlags flags = ArgumentFlags.None)
+        public ArgumentAttribute(
+            int position,
+            string pattern,
+            string? description = null,
+            ArgumentFlags flags = ArgumentFlags.None
+        )
         {
             Position = position;
 
@@ -79,7 +101,7 @@ namespace SCHALE.GameServer.Commands
     public class CommandHandlerAttribute : Attribute
     {
         public string Name { get; }
-        
+
         public string Hint { get; }
 
         public string Usage { get; }
@@ -100,13 +122,15 @@ namespace SCHALE.GameServer.Commands
         {
             Log.Information("Loading commands...");
 
-            IEnumerable<Type> classes = from t in Assembly.GetExecutingAssembly().GetTypes()
-                                        where t.IsClass && t.GetCustomAttribute<CommandHandlerAttribute>() is not null
-                                        select t;
+            IEnumerable<Type> classes =
+                from t in Assembly.GetExecutingAssembly().GetTypes()
+                where t.IsClass && t.GetCustomAttribute<CommandHandlerAttribute>() is not null
+                select t;
 
             foreach (var command in classes)
             {
-                CommandHandlerAttribute nameAttr = command.GetCustomAttribute<CommandHandlerAttribute>()!;
+                CommandHandlerAttribute nameAttr =
+                    command.GetCustomAttribute<CommandHandlerAttribute>()!;
                 commands.Add(nameAttr.Name, command);
 #if DEBUG
                 Log.Information($"Loaded {nameAttr.Name} command");
@@ -116,13 +140,19 @@ namespace SCHALE.GameServer.Commands
             Log.Information("Finished loading commands");
         }
 
-        public static Command? CreateCommand(string name, IrcConnection connection, string[] args, bool validate = true)
+        public static Command? CreateCommand(
+            string name,
+            IrcConnection connection,
+            string[] args,
+            bool validate = true
+        )
         {
             Type? command = commands.GetValueOrDefault(name);
             if (command is null)
                 return null;
 
-            var cmd = (Command)Activator.CreateInstance(command, new object[] { connection, args, validate })!;
+            var cmd = (Command)
+                Activator.CreateInstance(command, new object[] { connection, args, validate })!;
 
             string? ret = cmd.Validate();
             if (ret is not null && validate)

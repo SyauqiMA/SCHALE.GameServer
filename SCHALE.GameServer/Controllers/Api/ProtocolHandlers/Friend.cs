@@ -4,16 +4,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 {
     public class Friend : ProtocolHandlerBase
     {
-        public Friend(IProtocolHandlerFactory protocolHandlerFactory) : base(protocolHandlerFactory) { }
+        public Friend(IProtocolHandlerFactory protocolHandlerFactory)
+            : base(protocolHandlerFactory) { }
 
         [ProtocolHandler(Protocol.Friend_Check)]
         public ResponsePacket CheckHandler(FriendCheckRequest req)
         {
-
-            return new FriendCheckResponse()
-            {
-                
-            };
+            return new FriendCheckResponse() { };
         }
     }
 }

@@ -10,7 +10,10 @@ public static class CollectionEntryExt
         {
             foreach (var item in source.CurrentValue)
             {
-                source.EntityEntry.Context.Entry(item).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                source.EntityEntry.Context.Entry(item).State = Microsoft
+                    .EntityFrameworkCore
+                    .EntityState
+                    .Detached;
             }
             source.CurrentValue = null;
             source.IsLoaded = false;

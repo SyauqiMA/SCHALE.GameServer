@@ -1,16 +1,17 @@
-﻿using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
-using Serilog;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
+using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
+using Serilog;
 
 namespace SCHALE.GameServer.Utils
 {
     public class Config : Singleton<Config>
     {
-        public static string ConfigPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.json");
-        
+        public static string ConfigPath =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.json");
+
         public string IRCAddress { get; set; } = "127.0.0.1";
         public int IRCPort { get; set; } = 6667;
 
@@ -20,13 +21,16 @@ namespace SCHALE.GameServer.Utils
         {
             if (!File.Exists(ConfigPath))
             {
-                Instance.IRCAddress = GetLocalIPv4(NetworkInterfaceType.Wireless80211) == string.Empty ? GetLocalIPv4(NetworkInterfaceType.Ethernet) : GetLocalIPv4(NetworkInterfaceType.Wireless80211);
+                Instance.IRCAddress =
+                    GetLocalIPv4(NetworkInterfaceType.Wireless80211) == string.Empty
+                        ? GetLocalIPv4(NetworkInterfaceType.Ethernet)
+                        : GetLocalIPv4(NetworkInterfaceType.Wireless80211);
                 Save();
             }
 
             string json = File.ReadAllText(ConfigPath);
             Instance = JsonSerializer.Deserialize<Config>(json);
-            
+
             Log.Debug($"Config loaded");
         }
 
@@ -42,9 +46,14 @@ namespace SCHALE.GameServer.Utils
             string output = "";
             foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (item.NetworkInterfaceType == _type && item.OperationalStatus == OperationalStatus.Up)
+                if (
+                    item.NetworkInterfaceType == _type
+                    && item.OperationalStatus == OperationalStatus.Up
+                )
                 {
-                    foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
+                    foreach (
+                        UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses
+                    )
                     {
                         if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
                         {

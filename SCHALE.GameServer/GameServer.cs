@@ -72,7 +72,6 @@ namespace SCHALE.GameServer
                 // Load Commands
                 CommandFactory.LoadCommands();
 
-
                 var builder = WebApplication.CreateBuilder(args);
 
                 builder.Services.Configure<KestrelServerOptions>(op =>

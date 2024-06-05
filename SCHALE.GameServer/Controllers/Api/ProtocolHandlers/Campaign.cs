@@ -10,7 +10,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private ISessionKeyService sessionKeyService;
         private SCHALEContext context;
 
-        public Campaign(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context) : base(protocolHandlerFactory)
+        public Campaign(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -19,11 +24,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         [ProtocolHandler(Protocol.Campaign_List)]
         public ResponsePacket ListHandler(CampaignListRequest req)
         {
-
-            return new CampaignListResponse()
-            {
-
-            };
+            return new CampaignListResponse() { };
         }
 
         [ProtocolHandler(Protocol.Campaign_EnterMainStage)]

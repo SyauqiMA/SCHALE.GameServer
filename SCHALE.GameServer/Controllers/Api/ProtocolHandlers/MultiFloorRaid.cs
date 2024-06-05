@@ -10,7 +10,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public MultiFloorRaid(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public MultiFloorRaid(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -22,12 +28,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             return new MultiFloorRaidSyncResponse()
             {
-                MultiFloorRaidDBs = [
-                    new() {
-                        SeasonId = 2,
-                        ClearBattleFrame = -1
-                    }
-                ]
+                MultiFloorRaidDBs = [new() { SeasonId = 2, ClearBattleFrame = -1 }]
             };
         }
 
@@ -42,6 +43,5 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             return new MultiFloorRaidEndBattleResponse();
         }
-
     }
 }

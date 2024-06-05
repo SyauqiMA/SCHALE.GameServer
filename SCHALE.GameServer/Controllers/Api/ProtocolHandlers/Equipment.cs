@@ -11,7 +11,13 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         private readonly SCHALEContext context;
         private readonly ExcelTableService excelTableService;
 
-        public Equipment(IProtocolHandlerFactory protocolHandlerFactory, ISessionKeyService _sessionKeyService, SCHALEContext _context, ExcelTableService _excelTableService) : base(protocolHandlerFactory)
+        public Equipment(
+            IProtocolHandlerFactory protocolHandlerFactory,
+            ISessionKeyService _sessionKeyService,
+            SCHALEContext _context,
+            ExcelTableService _excelTableService
+        )
+            : base(protocolHandlerFactory)
         {
             sessionKeyService = _sessionKeyService;
             context = _context;
@@ -23,7 +29,9 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var originalStack = account.Equipment.FirstOrDefault(x => x.ServerId == req.EquipmentServerId);
+            var originalStack = account.Equipment.FirstOrDefault(x =>
+                x.ServerId == req.EquipmentServerId
+            );
             var newEquipment = new EquipmentDB()
             {
                 UniqueId = originalStack.UniqueId,
@@ -32,7 +40,9 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 BoundCharacterServerId = req.CharacterServerId,
             };
 
-            var equippedCharacter = account.Characters.FirstOrDefault(x => x.ServerId == req.CharacterServerId);
+            var equippedCharacter = account.Characters.FirstOrDefault(x =>
+                x.ServerId == req.CharacterServerId
+            );
 
             // remove 1 from original equipment stack
             originalStack.StackCount--;
@@ -58,17 +68,16 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         public ResponsePacket LevelUpHandler(EquipmentItemLevelUpRequest req)
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
-            var targetEquipment = account.Equipment.FirstOrDefault(x => x.ServerId == req.TargetServerId);
+            var targetEquipment = account.Equipment.FirstOrDefault(x =>
+                x.ServerId == req.TargetServerId
+            );
 
             targetEquipment.Level = 65;
             targetEquipment.Tier = 9;
 
             context.SaveChanges();
 
-            return new EquipmentItemLevelUpResponse()
-            {
-                EquipmentDB = targetEquipment,
-            };
+            return new EquipmentItemLevelUpResponse() { EquipmentDB = targetEquipment, };
         }
 
         [ProtocolHandler(Protocol.Equipment_BatchGrowth)]
@@ -79,7 +88,9 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
             foreach (var batchGrowthDB in req.EquipmentBatchGrowthRequestDBs)
             {
-                var targetEquipment = account.Equipment.FirstOrDefault(x => x.ServerId == batchGrowthDB.TargetServerId);
+                var targetEquipment = account.Equipment.FirstOrDefault(x =>
+                    x.ServerId == batchGrowthDB.TargetServerId
+                );
 
                 targetEquipment.Tier = (int)batchGrowthDB.AfterTier;
                 targetEquipment.Level = (int)batchGrowthDB.AfterLevel;
@@ -92,12 +103,8 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             }
 
             context.SaveChanges();
-            
-            return new EquipmentBatchGrowthResponse()
-            {
-                EquipmentDBs = upgradedEquipment,
-            };
-        }
 
+            return new EquipmentBatchGrowthResponse() { EquipmentDBs = upgradedEquipment, };
+        }
     }
 }
