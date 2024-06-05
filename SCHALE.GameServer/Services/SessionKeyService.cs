@@ -17,25 +17,40 @@ namespace SCHALE.GameServer.Services
             context = _context;
         }
 
-        public AccountDB GetAccount(SessionKey? sessionKey)
+        public long? GetAccountServerId(SessionKey? sessionKey)
         {
             if (sessionKey is null)
-                throw new WebAPIException(WebAPIErrorCode.InvalidSession, "SessionKey not received");
+                throw new WebAPIException(
+                    WebAPIErrorCode.InvalidSession,
+                    "SessionKey not received"
+                );
 
-            if (sessions.TryGetValue(sessionKey.AccountServerId, out Guid token) && token.ToString() == sessionKey.MxToken)
+            if (
+                sessions.TryGetValue(sessionKey.AccountServerId, out Guid token)
+                && token.ToString() == sessionKey.MxToken
+            )
             {
-                var account = context.Accounts.SingleOrDefault(x => x.ServerId == sessionKey.AccountServerId);
-
-                if (account is not null)
-                    return account;
+                return sessionKey.AccountServerId;
             }
+            return null;
+        }
 
-            throw new WebAPIException(WebAPIErrorCode.SessionNotFound, "Failed to get AccountDB from session");
+        public AccountDB GetAccount(SessionKey? sessionKey)
+        {
+            var accountID = GetAccountServerId(sessionKey);
+            var account = context.Accounts.SingleOrDefault(x => x.ServerId == accountID);
+            return account
+                ?? throw new WebAPIException(
+                    WebAPIErrorCode.SessionNotFound,
+                    "Failed to get AccountDB from session"
+                );
         }
 
         public SessionKey? Create(long publisherAccountId)
         {
-            var account = context.Accounts.SingleOrDefault(x => x.PublisherAccountId == publisherAccountId);
+            var account = context.Accounts.SingleOrDefault(x =>
+                x.PublisherAccountId == publisherAccountId
+            );
             if (account is null)
                 return null;
 
@@ -67,6 +82,7 @@ namespace SCHALE.GameServer.Services
     public interface ISessionKeyService
     {
         public SessionKey? Create(long publisherAccountId);
+        public long? GetAccountServerId(SessionKey? sessionKey);
         public AccountDB GetAccount(SessionKey? sessionKey);
     }
 }
