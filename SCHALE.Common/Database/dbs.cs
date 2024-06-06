@@ -1154,9 +1154,7 @@ namespace SCHALE.Common.Database
         [JsonIgnore]
         public virtual AccountDB Account { get; set; }
 
-        [JsonIgnore]
-        public long AccountServerId { get; set; }
-        
+        public long AccountServerId { get; set; }        
         public EchelonType EchelonType { get; set; }
         public long EchelonNumber { get; set; }
         public EchelonExtensionType ExtensionType { get; set; }

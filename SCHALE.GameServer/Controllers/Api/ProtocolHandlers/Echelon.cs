@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SCHALE.Common.Database;
-using SCHALE.Common.Database.ModelExtensions;
-using SCHALE.Common.FlatData;
+﻿using SCHALE.Common.Database;
 using SCHALE.Common.NetworkProtocol;
 using SCHALE.GameServer.Services;
 
@@ -41,16 +38,19 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 && e.ExtensionType == newEchelon.ExtensionType
             );
 
-            if (existingEchelon != null)
+            if (existingEchelon == null)
             {
-                context.Echelons.Remove(existingEchelon);
-                context.SaveChanges();
+                context.Echelons.Add(newEchelon);
+            }
+            else
+            {
+                newEchelon.ServerId = existingEchelon.ServerId;
+                context.Entry(existingEchelon).CurrentValues.SetValues(newEchelon);
             }
 
-            account.AddEchelons(context, [newEchelon]);
             context.SaveChanges();
 
-            return new EchelonSaveResponse() { EchelonDB = req.EchelonDB, };
+            return new EchelonSaveResponse() { EchelonDB = newEchelon, };
         }
     }
 }
