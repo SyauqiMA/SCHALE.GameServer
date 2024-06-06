@@ -522,7 +522,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             return new AccountSetRepresentCharacterAndCommentResponse()
             {
                 AccountDB = account,
-                RepresentCharacterDB = account.Characters.FirstOrDefault(x =>
+                RepresentCharacterDB = account.Characters.First(x =>
                     x.ServerId == req.RepresentCharacterServerId
                 )
             };

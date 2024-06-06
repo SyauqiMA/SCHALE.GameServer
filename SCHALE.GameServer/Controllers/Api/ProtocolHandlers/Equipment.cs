@@ -29,9 +29,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
 
-            var originalStack = account.Equipment.FirstOrDefault(x =>
-                x.ServerId == req.EquipmentServerId
-            );
+            var originalStack = account.Equipment.First(x => x.ServerId == req.EquipmentServerId);
             var newEquipment = new EquipmentDB()
             {
                 UniqueId = originalStack.UniqueId,
@@ -40,7 +38,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 BoundCharacterServerId = req.CharacterServerId,
             };
 
-            var equippedCharacter = account.Characters.FirstOrDefault(x =>
+            var equippedCharacter = account.Characters.First(x =>
                 x.ServerId == req.CharacterServerId
             );
 
@@ -68,9 +66,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         public ResponsePacket LevelUpHandler(EquipmentItemLevelUpRequest req)
         {
             var account = sessionKeyService.GetAccount(req.SessionKey);
-            var targetEquipment = account.Equipment.FirstOrDefault(x =>
-                x.ServerId == req.TargetServerId
-            );
+            var targetEquipment = account.Equipment.First(x => x.ServerId == req.TargetServerId);
 
             targetEquipment.Level = 65;
             targetEquipment.Tier = 9;
@@ -88,7 +84,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
             foreach (var batchGrowthDB in req.EquipmentBatchGrowthRequestDBs)
             {
-                var targetEquipment = account.Equipment.FirstOrDefault(x =>
+                var targetEquipment = account.Equipment.First(x =>
                     x.ServerId == batchGrowthDB.TargetServerId
                 );
 

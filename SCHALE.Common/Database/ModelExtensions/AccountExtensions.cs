@@ -59,7 +59,7 @@
                 gear.AccountServerId = account.ServerId;
                 context.Gears.Add(gear);
 
-                var targetCharacter = account.Characters.FirstOrDefault(x => x.ServerId == gear.BoundCharacterServerId);
+                var targetCharacter = account.Characters.First(x => x.ServerId == gear.BoundCharacterServerId);
                 targetCharacter.EquipmentServerIds.Add(gear.ServerId);
             }
 

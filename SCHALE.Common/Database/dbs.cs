@@ -139,7 +139,7 @@ namespace SCHALE.Common.Database
 
         public bool Equals(BattleSummary? other)
         {
-            return this.HashKey == other.HashKey;
+            return this.HashKey == other?.HashKey;
         }
     }
 
@@ -373,7 +373,7 @@ namespace SCHALE.Common.Database
         [Key]
         public long ServerId { get; set; }
 
-        public string? Nickname { get; set; }
+        public string Nickname { get; set; }
 
         public string? CallName { get; set; }
 
@@ -647,7 +647,7 @@ namespace SCHALE.Common.Database
 
     public class CampaignMainStageSaveDB : ContentSaveDB
     {
-        public ContentType ContentType { get; set; }
+        public override ContentType ContentType { get; set; }
         public CampaignState CampaignState { get; set; }
         public int CurrentTurn { get; set; }
         public int EnemyClearCount { get; set; }
@@ -1022,9 +1022,9 @@ namespace SCHALE.Common.Database
         public Dictionary<long, long> UsedFurnitureServerIdAndRemainingCounts { get; set; }
     }
 
-    public class ContentSaveDB
+    public abstract class ContentSaveDB
     {
-        public ContentType ContentType { get; set; }
+        public abstract ContentType ContentType { get; set; }
         public long AccountServerId { get; set; }
         public DateTime CreateTime { get; set; }
         public long StageUniqueId { get; set; }
@@ -1909,7 +1909,7 @@ namespace SCHALE.Common.Database
 
         public bool Equals(RaidMemberDescription? other)
         {
-            return this.AccountId == other.AccountId;
+            return this.AccountId == other?.AccountId;
         }
     }
 
@@ -2377,7 +2377,7 @@ namespace SCHALE.Common.Database
 
         public bool Equals(StickerDB? other)
         {
-            return this.StickerUniqueId == other.StickerUniqueId;
+            return this.StickerUniqueId == other?.StickerUniqueId;
         }
     }
 

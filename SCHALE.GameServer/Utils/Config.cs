@@ -29,7 +29,7 @@ namespace SCHALE.GameServer.Utils
             }
 
             string json = File.ReadAllText(ConfigPath);
-            Instance = JsonSerializer.Deserialize<Config>(json);
+            Instance = JsonSerializer.Deserialize<Config>(json)!;
 
             Log.Debug($"Config loaded");
         }

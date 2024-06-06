@@ -112,7 +112,7 @@ namespace SCHALE.Common.Database
         {
         }
 
-        public static SCHALESqliteContext Create(string connectionString) =>
+        public static new SCHALESqliteContext Create(string connectionString) =>
             new(new DbContextOptionsBuilder<SCHALESqliteContext>()
                 .UseSqlite(connectionString).Options);
 

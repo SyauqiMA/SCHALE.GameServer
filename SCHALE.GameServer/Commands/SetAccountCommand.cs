@@ -46,7 +46,7 @@ namespace SCHALE.GameServer.Commands
                 {
                     try
                     {
-                        object targetValue = converter.ConvertFromString(Value);
+                        object? targetValue = converter.ConvertFromString(Value);
 
                         targetProperty.SetValue(connection.Account, targetValue);
                         connection.Context.SaveChanges();

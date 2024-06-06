@@ -129,7 +129,7 @@ namespace SCHALE.Common.Utils
                     Level = 1,
                     SlotIndex = 4,
                     BoundCharacterServerId = context
-                        .Characters.FirstOrDefault(z => z.UniqueId == x.CharacterId)
+                        .Characters.First(z => z.UniqueId == x.CharacterId)
                         .ServerId,
                     Tier = 2,
                     Exp = 0,

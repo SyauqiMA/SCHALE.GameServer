@@ -8,11 +8,11 @@ namespace SCHALE.GameServer.Managers
 {
     public class RaidManager : Singleton<RaidManager>
     {
-        public SingleRaidLobbyInfoDB RaidLobbyInfoDB { get; private set; }
+        public SingleRaidLobbyInfoDB? RaidLobbyInfoDB { get; private set; }
 
-        public RaidDB RaidDB { get; private set; }
+        public RaidDB? RaidDB { get; private set; }
 
-        public RaidBattleDB RaidBattleDB { get; private set; }
+        public RaidBattleDB? RaidBattleDB { get; private set; }
 
         public SingleRaidLobbyInfoDB GetLobby(
             RaidInfo raidInfo,
@@ -31,7 +31,7 @@ namespace SCHALE.GameServer.Managers
                     ReceiveRewardIds = targetSeasonData.SeasonRewardId,
                     PlayableHighestDifficulty = new()
                     {
-                        { targetSeasonData.OpenRaidBossGroup.FirstOrDefault(), Difficulty.Torment }
+                        { targetSeasonData.OpenRaidBossGroup.First(), Difficulty.Torment }
                     }
                 };
             }

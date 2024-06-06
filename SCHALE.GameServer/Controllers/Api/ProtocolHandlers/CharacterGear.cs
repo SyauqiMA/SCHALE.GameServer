@@ -34,13 +34,11 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                 .GetTable<CharacterGearExcelTable>()
                 .UnPack()
                 .DataList;
-            var targetCharacter = account.Characters.FirstOrDefault(x =>
+            var targetCharacter = account.Characters.First(x =>
                 x.ServerId == req.CharacterServerId
             );
 
-            var gearId = gearExcelTable
-                .FirstOrDefault(x => x.CharacterId == targetCharacter.UniqueId)
-                .Id;
+            var gearId = gearExcelTable.First(x => x.CharacterId == targetCharacter.UniqueId).Id;
 
             var newGear = new GearDB()
             {
@@ -65,7 +63,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         [ProtocolHandler(Protocol.CharacterGear_TierUp)]
         public ResponsePacket TierUpHandler(CharacterGearTierUpRequest req)
         { // doesnt work
-            var targetGear = context.Gears.FirstOrDefault(x => x.ServerId == req.GearServerId);
+            var targetGear = context.Gears.First(x => x.ServerId == req.GearServerId);
 
             targetGear.Tier++;
             context.SaveChanges();

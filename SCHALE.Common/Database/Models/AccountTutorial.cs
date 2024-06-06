@@ -7,6 +7,6 @@ namespace SCHALE.Common.Database.Models
         [Key]
         public required long AccountServerId { get; set; }
 
-        public List<long> TutorialIds { get; set; }
+        public List<long> TutorialIds { get; set; } = [];
     }
 }

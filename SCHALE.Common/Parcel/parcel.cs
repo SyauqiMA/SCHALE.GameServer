@@ -180,7 +180,7 @@ namespace SCHALE.Common.Parcel
 
         public bool Equals(ParcelInfo? other)
         {
-            return this.Key.Id.Equals(other.Key.Id);
+            return this.Key.Id.Equals(other?.Key?.Id);
         }
     }
 
@@ -194,12 +194,12 @@ namespace SCHALE.Common.Parcel
 
         public int CompareTo(ParcelKeyPair? other)
         {
-            return Id.CompareTo(other.Id);
+            return Id.CompareTo(other?.Id);
         }
 
         public bool Equals(ParcelKeyPair? other)
         {
-            return Id.Equals(other.Id);
+            return Id.Equals(other?.Id);
         }
     }
 

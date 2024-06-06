@@ -37,7 +37,7 @@ namespace SCHALE.GameServer.Commands
                         );
                     Command? cmd = CommandFactory.CreateCommand(Command, connection, args, false);
 
-                    if (cmd is not null)
+                    if (cmd is not null && cmdAtr is not null)
                     {
                         connection.SendChatMessage(
                             $"{Command} - {cmdAtr.Hint} (Usage: {cmdAtr.Usage})"
@@ -78,7 +78,7 @@ namespace SCHALE.GameServer.Commands
 
                 Command? cmd = CommandFactory.CreateCommand(command, connection, args, false);
 
-                if (cmd is not null)
+                if (cmd is not null && cmdAtr is not null)
                 {
                     connection.SendChatMessage(
                         $"{command} - {cmdAtr.Hint} (Usage: {cmdAtr.Usage})"
