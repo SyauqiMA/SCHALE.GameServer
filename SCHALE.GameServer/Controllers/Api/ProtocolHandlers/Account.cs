@@ -441,7 +441,16 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 
                 ScenarioListResponse = new ScenarioListResponse()
                 {
-                    ScenarioHistoryDBs = [.. account.Scenarios]
+                    ScenarioHistoryDBs = [.. account.Scenarios],
+                    ScenarioGroupHistoryDBs =
+                    [
+                        new() // PVP
+                        {
+                            AccountServerId = account.ServerId,
+                            ScenarioGroupUqniueId = 300,
+                            ScenarioType = 3
+                        }
+                    ]
                 },
 
                 EliminateRaidLoginResponse = new EliminateRaidLoginResponse()
