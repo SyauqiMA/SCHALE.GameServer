@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("frida-il2cpp-bridge");
 const SERVER_ADDRESS = "REPLACE THIS WITH YOUR LOCAL IP";
+const HIJACK = true;
 while (true) {
     if (Process.findModuleByName("libil2cpp.so")) {
         Il2Cpp.perform(() => {
@@ -30,6 +31,12 @@ while (true) {
                 Conn.method("set_ProhibitedWordBlackListUri").invoke(Il2Cpp.String.from(""));
                 Conn.method("set_ProhibitedWordBlackListUri").invoke(Il2Cpp.String.from(""));
         
+                if (HIJACK) {
+                    const acur =  Conn.method("get_AddressablesCatalogUrlRoot").invoke();
+                    const ver = acur.toString().slice(1, -1).split("/").at(-1);
+                    Conn.method("set_AddressablesCatalogUrlRoot")
+                        .invoke(Il2Cpp.String.from(`http://${SERVER_ADDRESS}/data/${ver}`));
+                }
                 return Conn;
             }
           

@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Text;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
-using SCHALE.Common.Crypto;
 using SCHALE.Common.Database;
 using SCHALE.GameServer.Commands;
 using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
@@ -20,13 +16,12 @@ namespace SCHALE.GameServer
     {
         public static async Task Main(string[] args)
         {
+            string env =
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
             var config = new ConfigurationBuilder()
                 .SetBasePath(Path.GetDirectoryName(AppContext.BaseDirectory)!)
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile(
-                    $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-                    true
-                )
+                .AddJsonFile($"appsettings.{env}.json", true)
                 .AddJsonFile("appsettings.Local.json", true)
                 .Build();
 
@@ -87,6 +82,7 @@ namespace SCHALE.GameServer
                 builder.Services.AddExcelTableService();
                 builder.Services.AddIrcService();
                 builder.Services.AddSharedDataCache();
+                builder.Services.AddSingleton<IConfiguration>(config);
 
                 // Add all Handler Groups
                 var handlerGroups = Assembly
