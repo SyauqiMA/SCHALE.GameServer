@@ -1,4 +1,6 @@
-﻿using SCHALE.Common.Database;
+﻿#pragma warning disable CS8618
+
+using SCHALE.Common.Database;
 using SCHALE.Common.FlatData;
 
 namespace SCHALE.Common.NetworkProtocol
@@ -62,3 +64,5 @@ namespace SCHALE.Common.NetworkProtocol
         CanReceiveMultiFloorRaidReward = 65536
     }
 }
+
+#pragma warning restore CS8618

@@ -1,3 +1,5 @@
+#pragma warning disable CS8618
+
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -2529,3 +2531,5 @@ namespace SCHALE.Common.Database
         public DateTime RewardReceiveDate { get; set; }
     }
 }
+
+#pragma warning restore CS8618
