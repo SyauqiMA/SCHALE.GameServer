@@ -124,9 +124,10 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             // saving battle result to continue on next attempt doesn't work
             var battle = RaidManager.Instance.RaidBattleDB;
             var bossResult = req.Summary.RaidSummary.RaidBossResults.FirstOrDefault();
+            var damageResult = bossResult.RaidDamage;
 
-            battle.CurrentBossHP = bossResult.EndHpRateRawValue;
-            battle.CurrentBossGroggy = bossResult.GroggyRateRawValue;
+            battle.CurrentBossHP -= damageResult.GivenDamage;
+            battle.CurrentBossGroggy = damageResult.GivenGroggyPoint;
             battle.CurrentBossAIPhase = bossResult.AIPhase;
             battle.SubPartsHPs = bossResult.SubPartsHPs;
 

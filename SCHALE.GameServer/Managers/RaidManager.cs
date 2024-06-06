@@ -61,6 +61,8 @@ namespace SCHALE.GameServer.Managers
                     ContentType = ContentType.Raid,
                     UniqueId = raidId,
                     SeasonId = raidInfo.SeasonId,
+                    Begin = TimeManager.KoreaNow,
+                    End = TimeManager.KoreaNow.AddHours(1),
                     RaidState = RaidStatus.Playing,
                     IsPractice = isPractice,
                     BossDifficulty = raidInfo.CurrentDifficulty,

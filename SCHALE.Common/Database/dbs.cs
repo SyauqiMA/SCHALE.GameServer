@@ -1,16 +1,20 @@
-using SCHALE.Common.FlatData;
-using SCHALE.Common.NetworkProtocol;
-using SCHALE.Common.Parcel;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using SCHALE.Common.FlatData;
+using SCHALE.Common.NetworkProtocol;
+using SCHALE.Common.Parcel;
 
 namespace SCHALE.Common.Database
 {
-    public class SingleRaidLobbyInfoDB : RaidLobbyInfoDB
+    public class SingleRaidLobbyInfoDB : RaidLobbyInfoDB { }
+
+    public class RaidDamage
     {
-    
+        public int Index { get; set; }
+        public long GivenDamage { get; set; }
+        public long GivenGroggyPoint { get; set; }
     }
 
     public struct RaidBossResult : IEquatable<RaidBossResult>
@@ -24,7 +28,7 @@ namespace SCHALE.Common.Database
         [JsonIgnore]
         public long GivenGroggyPoint { get; set; }
 
-        //public RaidDamage RaidDamage { get; set; }
+        public RaidDamage RaidDamage { get; set; }
 
         public long EndHpRateRawValue { readonly get; set; }
 
@@ -44,12 +48,12 @@ namespace SCHALE.Common.Database
 
     public class RaidBossResultCollection : KeyedCollection<int, RaidBossResult>
     {
-		[JsonIgnore]
+        [JsonIgnore]
         public int LastIndex { get; set; }
 
         [JsonIgnore]
         public long TotalDamage { get; set; }
-        
+
         [JsonIgnore]
         public long CurrentDamage { get; set; }
 
@@ -73,7 +77,7 @@ namespace SCHALE.Common.Database
         public long RaidSeasonId { get; set; }
 
         public long GivenDamage { get; set; }
-        
+
         public int TotalGroggyCount { get; set; }
 
         public int RaidBossIndex { get; set; }
@@ -97,7 +101,7 @@ namespace SCHALE.Common.Database
         //public GroupTag Winner { get; set; }
 
         [JsonIgnore]
-        public bool IsPlayerWin {  get; set; }  
+        public bool IsPlayerWin { get; set; }
 
         //public BattleEndType EndType { get; set; }
 
@@ -137,10 +141,7 @@ namespace SCHALE.Common.Database
         }
     }
 
-    public class TypedJsonWrapper
-    {
-
-    }
+    public class TypedJsonWrapper { }
 
     public class AttendanceBookReward
     {
@@ -193,7 +194,6 @@ namespace SCHALE.Common.Database
 
     public enum ParcelChangeType
     {
-
         NoChange,
 
         Terminated,
@@ -216,7 +216,6 @@ namespace SCHALE.Common.Database
         public bool IsContinue { get; set; }
     }
 
-
     public class WorldRaidSnapshot
     {
         public List<WorldRaidLocalBossDB> WorldRaidLocalBossDBs { get; set; }
@@ -224,14 +223,12 @@ namespace SCHALE.Common.Database
         public List<CampaignStageHistoryDB> CampaignStageHistoryDBs { get; set; }
     }
 
-
     public class WorldRaidWorldBossDB
     {
         public long GroupId { get; set; }
         public long HP { get; set; }
         public long Participants { get; set; }
     }
-
 
     public class AcademyDB
     {
@@ -241,7 +238,6 @@ namespace SCHALE.Common.Database
         public Dictionary<long, List<long>> ZoneScheduleGroupRecords { get; set; }
     }
 
-
     public class AcademyLocationDB
     {
         public long AccountId { get; set; }
@@ -249,7 +245,6 @@ namespace SCHALE.Common.Database
         public long Rank { get; set; }
         public long Exp { get; set; }
     }
-
 
     public class AcademyMessageDB
     {
@@ -262,7 +257,6 @@ namespace SCHALE.Common.Database
         public bool IsRead { get; set; }
     }
 
-
     public class AcademyMessageOutLineDB
     {
         public long CharacterUniqueId { get; set; }
@@ -270,7 +264,6 @@ namespace SCHALE.Common.Database
         public long LastMessageUniqueId { get; set; }
         public long LastMessageServerId { get; set; }
     }
-
 
     public class AcademyScheduleDB
     {
@@ -282,7 +275,6 @@ namespace SCHALE.Common.Database
         public int CompleteCount { get; set; }
     }
 
-
     public class AccountAchievementDB
     {
         public long AccountServerId { get; set; }
@@ -290,13 +282,11 @@ namespace SCHALE.Common.Database
         public long AchievementValue { get; set; }
     }
 
-
     public class AccountAttachmentDB
     {
         public long AccountId { get; set; }
         public long EmblemUniqueId { get; set; }
     }
-
 
     public class AccountCurrencyDB
     {
@@ -326,10 +316,10 @@ namespace SCHALE.Common.Database
 
         [JsonIgnore]
         public virtual ICollection<CharacterDB> Characters { get; }
-        
+
         [JsonIgnore]
         public virtual ICollection<MissionProgressDB> MissionProgresses { get; }
-        
+
         [JsonIgnore]
         public virtual ICollection<EchelonDB> Echelons { get; }
 
@@ -380,46 +370,45 @@ namespace SCHALE.Common.Database
 
         [Key]
         public long ServerId { get; set; }
-        
+
         public string? Nickname { get; set; }
-        
+
         public string? CallName { get; set; }
-        
+
         public string? DevId { get; set; }
-        
+
         public AccountState State { get; set; }
-        
+
         public int Level { get; set; }
-        
+
         public long Exp { get; set; }
-        
+
         public string? Comment { get; set; }
-        
+
         public int LobbyMode { get; set; }
-        
+
         public int RepresentCharacterServerId { get; set; }
-        
+
         public long MemoryLobbyUniqueId { get; set; }
-        
+
         public DateTime LastConnectTime { get; set; }
-        
+
         public DateTime? BirthDay { get; set; }
-        
+
         public DateTime CallNameUpdateTime { get; set; }
-        
+
         public long PublisherAccountId { get; set; }
-        
+
         public int? RetentionDays { get; set; }
-        
+
         public int? VIPLevel { get; set; }
-        
+
         public DateTime CreateDate { get; set; }
-        
+
         public int? UnReadMailCount { get; set; }
-     
+
         public DateTime? LinkRewardDate { get; set; }
     }
-
 
     public class ArenaBattleDB
     {
@@ -433,7 +422,6 @@ namespace SCHALE.Common.Database
         public ArenaUserDB DefendingUserDB { get; set; }
         public BattleSummary BattleSummary { get; set; }
     }
-
 
     public class ArenaCharacterDB
     {
@@ -454,7 +442,6 @@ namespace SCHALE.Common.Database
         public CostumeDB CostumeDB { get; set; }
     }
 
-
     public class ArenaDamageReportDB
     {
         public long ArenaBattleServerId { get; set; }
@@ -466,7 +453,6 @@ namespace SCHALE.Common.Database
         public Dictionary<long, long> DefenderDamageReport { get; set; }
     }
 
-
     public class ArenaHistoryDB
     {
         public ArenaBattleDB ArenaBattleDB { get; set; }
@@ -476,7 +462,6 @@ namespace SCHALE.Common.Database
         public ArenaUserDB DefendingUserDB { get; set; }
         public long WinnerAccountServerId { get; set; }
     }
-
 
     public class ArenaPlayerInfoDB
     {
@@ -503,7 +488,6 @@ namespace SCHALE.Common.Database
         public int SquadCount { get; set; }
         public long MapId { get; set; }
     }
-
 
     public class ArenaUserDB
     {
@@ -547,7 +531,6 @@ namespace SCHALE.Common.Database
         public bool HasGear { get; set; }
     }
 
-
     public class AttendanceHistoryDB
     {
         public long ServerId { get; set; }
@@ -560,7 +543,6 @@ namespace SCHALE.Common.Database
         public Dictionary<long, DateTime?> AttendedDayNullable { get; set; }
     }
 
-
     public class BanDB
     {
         public long ServerId { get; set; }
@@ -572,7 +554,6 @@ namespace SCHALE.Common.Database
         public DateTime CancelDate { get; set; }
         public string Reason { get; set; }
     }
-
 
     public class BeforehandGachaSnapshotDB
     {
@@ -600,7 +581,6 @@ namespace SCHALE.Common.Database
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
     }
-
 
     public class CafeDB
     {
@@ -632,7 +612,6 @@ namespace SCHALE.Common.Database
         public bool IsSummon { get; set; }
 
         public DateTime LastInteractTime { get; set; }
-
     }
 
     public class CafePresetDB
@@ -643,7 +622,6 @@ namespace SCHALE.Common.Database
         public bool IsEmpty { get; set; }
     }
 
-
     public class CafeProductionDB
     {
         public long CafeDBId { get; set; }
@@ -651,7 +629,6 @@ namespace SCHALE.Common.Database
         public DateTime AppliedDate { get; set; }
         public List<CafeProductionParcelInfo> ProductionParcelInfos { get; set; }
     }
-
 
     public class CampaignChapterClearRewardHistoryDB
     {
@@ -661,12 +638,10 @@ namespace SCHALE.Common.Database
         public DateTime ReceiveDate { get; set; }
     }
 
-
     public class CampaignExtraStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class CampaignMainStageSaveDB : ContentSaveDB
     {
@@ -676,9 +651,11 @@ namespace SCHALE.Common.Database
         public int EnemyClearCount { get; set; }
         public int LastEnemyEntityId { get; set; }
         public int TacticRankSCount { get; set; }
+
         //public Dictionary<long, HexaUnit> EnemyInfos { get; set; }
         //public Dictionary<long, HexaUnit> EchelonInfos { get; set; }
         public Dictionary<long, List<long>> WithdrawInfos { get; set; }
+
         //public Dictionary<long, Strategy> StrategyObjects { get; set; }
         public Dictionary<long, List<ParcelInfo>> StrategyObjectRewards { get; set; }
         public List<long> StrategyObjectHistory { get; set; }
@@ -688,7 +665,6 @@ namespace SCHALE.Common.Database
         //public List<HexaDisplayInfo> DisplayInfos { get; set; }
         //public List<HexaUnit> DeployedEchelonInfos { get; set; }
     }
-
 
     public class CampaignStageHistoryDB
     {
@@ -711,18 +687,15 @@ namespace SCHALE.Common.Database
         public long TodayPlayCountForUI { get; set; }
     }
 
-
     public class CampaignSubStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
 
-
     public class CampaignTutorialStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class CardShopElementDB
     {
@@ -732,7 +705,6 @@ namespace SCHALE.Common.Database
         public bool SoldOut { get; set; }
     }
 
-
     public class CardShopPurchaseHistoryDB
     {
         public long EventContentId { get; set; }
@@ -740,11 +712,13 @@ namespace SCHALE.Common.Database
         public long PurchaseCount { get; set; }
     }
 
-
     public class CharacterDB : ParcelBase
     {
         [NotMapped]
-        public override ParcelType Type { get => ParcelType.Character; }
+        public override ParcelType Type
+        {
+            get => ParcelType.Character;
+        }
 
         [JsonIgnore]
         public virtual AccountDB Account { get; set; }
@@ -779,14 +753,12 @@ namespace SCHALE.Common.Database
         public Dictionary<int, long> EquipmentSlotAndDBIds { get; set; } = [];
     }
 
-
     public class ClanAssistRentHistoryDB
     {
         public long AssistCharacterAccountId { get; set; }
         public long AssistCharacterDBId { get; set; }
         public DateTime RentDate { get; set; }
     }
-
 
     public class ClanAssistRewardInfo
     {
@@ -797,7 +769,6 @@ namespace SCHALE.Common.Database
         public List<ParcelInfo> RentRewardParcels { get; set; }
     }
 
-
     public class ClanAssistSlotDB
     {
         public EchelonType EchelonType { get; set; }
@@ -807,13 +778,13 @@ namespace SCHALE.Common.Database
         public long TotalRentCount { get; set; }
     }
 
-
     public class ClanAssistUseInfo
     {
         public long CharacterAccountId { get; set; }
         public long CharacterDBId { get; set; }
         public EchelonType EchelonType { get; set; }
         public int SlotNumber { get; set; }
+
         //public AssistRelation AssistRelation { get; set; }
         public int EchelonSlotType { get; set; }
         public int EchelonSlotIndex { get; set; }
@@ -822,7 +793,6 @@ namespace SCHALE.Common.Database
         public bool IsMulligan { get; set; }
         public bool IsTSAInteraction { get; set; }
     }
-
 
     public class ClanDB
     {
@@ -836,7 +806,6 @@ namespace SCHALE.Common.Database
         public long ClanMemberCount { get; set; }
         public ClanJoinOption ClanJoinOption { get; set; }
     }
-
 
     public class ClanMemberDB
     {
@@ -856,7 +825,6 @@ namespace SCHALE.Common.Database
         public AccountAttachmentDB AttachmentDB { get; set; }
     }
 
-
     public class ClanMemberDescriptionDB
     {
         public long Exp { get; set; }
@@ -865,7 +833,6 @@ namespace SCHALE.Common.Database
         public long ArenaSeasonBestRanking { get; set; }
         public long ArenaSeasonCurrentRanking { get; set; }
     }
-
 
     public class ClearDeckCharacterDB
     {
@@ -877,7 +844,6 @@ namespace SCHALE.Common.Database
         public SquadType SquadType { get; set; }
         public int WeaponStarGrade { get; set; }
     }
-
 
     public class ClearDeckDB
     {
@@ -895,7 +861,6 @@ namespace SCHALE.Common.Database
         public long[] Arguments { get; private set; }
     }
 
-
     public class ConquestEchelonDB
     {
         public long EventContentId { get; set; }
@@ -906,7 +871,6 @@ namespace SCHALE.Common.Database
         public ClanAssistUseInfo AssistUseInfo { get; set; }
     }
 
-
     public class ConquestErosionDB
     {
         //public ConquestEventObjectType ObjectType { get; set; }
@@ -915,7 +879,6 @@ namespace SCHALE.Common.Database
         public DateTime CreateDate { get; set; }
     }
 
-
     public class ConquestEventObjectDB
     {
         public long ConquestObjectDBId { get; set; }
@@ -923,10 +886,10 @@ namespace SCHALE.Common.Database
         public StageDifficulty Difficulty { get; set; }
         public long TileUniqueId { get; set; }
         public long ObjectId { get; set; }
+
         //public ConquestEventObjectType ObjectType { get; set; }
         public bool IsAlive { get; set; }
     }
-
 
     public class ConquestInfoDB
     {
@@ -943,7 +906,6 @@ namespace SCHALE.Common.Database
         public long? AlertMassErosionId { get; set; }
     }
 
-
     public class ConquestMainStoryStepSummary
     {
         public long ConqueredTileCount { get; set; }
@@ -951,14 +913,12 @@ namespace SCHALE.Common.Database
         public bool IsStepOpen { get; set; }
     }
 
-
     public class ConquestMainStorySummary
     {
         public long EventContentId { get; set; }
         public StageDifficulty Difficulty { get; set; }
         public Dictionary<int, ConquestMainStoryStepSummary> ConquestStepSummaryDict { get; set; }
     }
-
 
     public class ConquestStageSaveDB
     {
@@ -975,7 +935,6 @@ namespace SCHALE.Common.Database
         public int EchelonSlotIndex { get; set; }
     }
 
-
     public class ConquestStepSummary
     {
         public long ConqueredTileCount { get; set; }
@@ -986,14 +945,12 @@ namespace SCHALE.Common.Database
         public bool IsStepOpen { get; set; }
     }
 
-
     public class ConquestSummary
     {
         public long EventContentId { get; set; }
         public StageDifficulty Difficulty { get; set; }
         public Dictionary<int, ConquestStepSummary> ConquestStepSummaryDict { get; set; }
     }
-
 
     public class ConquestTileDB
     {
@@ -1009,19 +966,16 @@ namespace SCHALE.Common.Database
         public bool[] StarFlags { get; set; }
     }
 
-
     public class ConquestTreasureBoxDB
     {
         //public ConquestEventObjectType ObjectType { get; set; }
     }
-
 
     public class ConquestUnexpectedEnemyDB
     {
         public long UnitId { get; set; }
         //public ConquestEventObjectType ObjectType { get; set; }
     }
-
 
     public abstract class ConsumableItemBaseDB : ParcelBase
     {
@@ -1041,10 +995,9 @@ namespace SCHALE.Common.Database
         public long ServerId { get; set; }
 
         public long UniqueId { get; set; }
-        
+
         public long StackCount { get; set; }
     }
-
 
     public class ConsumeRequestDB
     {
@@ -1057,7 +1010,6 @@ namespace SCHALE.Common.Database
         public bool IsValid { get; set; }
     }
 
-
     public class ConsumeResultDB
     {
         public List<long> RemovedItemServerIds { get; set; }
@@ -1067,7 +1019,6 @@ namespace SCHALE.Common.Database
         public Dictionary<long, long> UsedEquipmentServerIdAndRemainingCounts { get; set; }
         public Dictionary<long, long> UsedFurnitureServerIdAndRemainingCounts { get; set; }
     }
-
 
     public class ContentSaveDB
     {
@@ -1087,25 +1038,25 @@ namespace SCHALE.Common.Database
         public string BIEchelon4 { get; set; }
     }
 
-
     public class ContentsValueChangeDB
     {
         public ContentsChangeType ContentsChangeType { get; set; }
     }
-
 
     public class CostumeDB : ParcelBase
     {
         [JsonIgnore]
         public override IEnumerable<ParcelInfo> ParcelInfos { get; }
 
-        public override ParcelType Type { get => ParcelType.Costume; }
+        public override ParcelType Type
+        {
+            get => ParcelType.Costume;
+        }
 
         public long BoundCharacterServerId { get; set; }
 
         public long UniqueId { get; set; }
     }
-
 
     public class CraftInfoDB
     {
@@ -1117,7 +1068,6 @@ namespace SCHALE.Common.Database
         public IEnumerable<long> ResultIds { get; set; }
         public IEnumerable<ParcelInfo> RewardParcelInfos { get; set; }
     }
-
 
     public class CraftNodeDB
     {
@@ -1134,13 +1084,11 @@ namespace SCHALE.Common.Database
         public ParcelInfo RewardParcelInfo { get; set; }
     }
 
-
     public class CraftNodeResult
     {
         public CraftNodeTier NodeTier { get; set; }
         public ParcelInfo ParcelInfo { get; set; }
     }
-
 
     public class CraftPresetNodeDB
     {
@@ -1150,12 +1098,10 @@ namespace SCHALE.Common.Database
         public ConsumeRequestDB ConsumeRequestDB { get; set; }
     }
 
-
     public class CraftPresetSlotDB
     {
         public List<CraftPresetNodeDB> PresetNodeDBs { get; set; }
     }
-
 
     public class DailyResetCount
     {
@@ -1166,13 +1112,11 @@ namespace SCHALE.Common.Database
         public ResetContentType ResetContentType { get; set; }
     }
 
-
     public class DailyResetCountDB
     {
         public long AccountServerId { get; set; }
         public Dictionary<ResetContentType, long> ResetCount { get; set; }
     }
-
 
     public class DetailedAccountInfoDB
     {
@@ -1225,7 +1169,6 @@ namespace SCHALE.Common.Database
         public int[] CombatStyleIndex { get; set; } = [];
     }
 
-
     public class EchelonPresetDB
     {
         public int GroupIndex { get; set; }
@@ -1241,7 +1184,6 @@ namespace SCHALE.Common.Database
         public long[] StrikerUniqueIds { get; set; }
     }
 
-
     public class EchelonPresetGroupDB
     {
         public int GroupIndex { get; set; }
@@ -1251,13 +1193,11 @@ namespace SCHALE.Common.Database
         public EchelonPresetDB Item { get; set; }
     }
 
-
     public class EliminateRaidLobbyInfoDB : RaidLobbyInfoDB
     {
         public List<string> OpenedBossGroups { get; set; }
         public Dictionary<string, long> BestRankingPointPerBossGroup { get; set; }
     }
-
 
     public class EmblemDB
     {
@@ -1266,7 +1206,6 @@ namespace SCHALE.Common.Database
         public DateTime ReceiveDate { get; set; }
         public IEnumerable<ParcelInfo> ParcelInfos { get; set; }
     }
-
 
     public class EquipmentBatchGrowthRequestDB
     {
@@ -1278,18 +1217,23 @@ namespace SCHALE.Common.Database
         public List<SelectTicketReplaceInfo> ReplaceInfos { get; set; }
     }
 
-
     public class EquipmentDB : ConsumableItemBaseDB
     {
         [NotMapped]
-        public override ParcelType Type { get => ParcelType.Equipment;  }
+        public override ParcelType Type
+        {
+            get => ParcelType.Equipment;
+        }
 
         [NotMapped]
         [JsonIgnore]
         public override IEnumerable<ParcelInfo> ParcelInfos { get; }
 
         [JsonIgnore]
-        public override bool CanConsume { get => false; }
+        public override bool CanConsume
+        {
+            get => false;
+        }
 
         public int Level { get; set; }
         public long Exp { get; set; }
@@ -1300,7 +1244,6 @@ namespace SCHALE.Common.Database
         public bool IsNew { get; set; }
         public bool IsLocked { get; set; }
     }
-
 
     public class EquipmentExcelData
     {
@@ -1314,7 +1257,6 @@ namespace SCHALE.Common.Database
         public EquipmentExcel _excel { get; set; }
     }
 
-
     public class EventContentBonusRewardDB
     {
         public long EventContentId { get; set; }
@@ -1322,13 +1264,11 @@ namespace SCHALE.Common.Database
         public ParcelInfo BonusParcelInfo { get; set; }
     }
 
-
     public class EventContentBoxGachaData
     {
         public long EventContentId { get; set; }
         public Dictionary<long, EventContentBoxGachaVariation> Variations { get; set; }
     }
-
 
     public class EventContentBoxGachaDB
     {
@@ -1338,7 +1278,6 @@ namespace SCHALE.Common.Database
         public long Round { get; set; }
         public int PurchaseCount { get; set; }
     }
-
 
     public class EventContentBoxGachaElement
     {
@@ -1351,7 +1290,6 @@ namespace SCHALE.Common.Database
         public List<ParcelInfo> Rewards { get; set; }
     }
 
-
     public class EventContentBoxGachaRoundElement
     {
         public long EventContentId { get; set; }
@@ -1360,14 +1298,12 @@ namespace SCHALE.Common.Database
         public List<EventContentBoxGachaElement> Elements { get; set; }
     }
 
-
     public class EventContentBoxGachaVariation
     {
         public long EventContentId { get; set; }
         public long VariationId { get; set; }
         public Dictionary<long, EventContentBoxGachaRoundElement> GachaRoundElements { get; set; }
     }
-
 
     public class EventContentChangeDB
     {
@@ -1380,7 +1316,6 @@ namespace SCHALE.Common.Database
         public bool ChangeFlag { get; set; }
     }
 
-
     public class EventContentCollectionDB
     {
         public long EventContentId { get; set; }
@@ -1388,7 +1323,6 @@ namespace SCHALE.Common.Database
         public long UniqueId { get; set; }
         public DateTime ReceiveDate { get; set; }
     }
-
 
     public class EventContentDiceRaceDB
     {
@@ -1399,7 +1333,6 @@ namespace SCHALE.Common.Database
         public long ReceiveRewardLapCount { get; set; }
     }
 
-
     public class EventContentDiceResult
     {
         public int Index { get; set; }
@@ -1407,14 +1340,12 @@ namespace SCHALE.Common.Database
         public List<ParcelInfo> Rewards { get; set; }
     }
 
-
     public class EventContentFortuneGachaStackCountDB
     {
         public long AccountId { get; set; }
         public long EventContentId { get; set; }
         public int GachaStackCount { get; set; }
     }
-
 
     public class EventContentLocationDB
     {
@@ -1426,12 +1357,10 @@ namespace SCHALE.Common.Database
         public Dictionary<long, List<VisitingCharacterDB>> ZoneVisitCharacterDBs { get; set; }
     }
 
-
     public class EventContentMainGroundStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class EventContentMainStageSaveDB
     {
@@ -1441,25 +1370,21 @@ namespace SCHALE.Common.Database
         public long CurrentAppearedBuffGroupId { get; set; }
     }
 
-
     public class EventContentPermanentDB
     {
         public long EventContentId { get; set; }
         public bool IsStageAllClear { get; set; }
     }
 
-
     public class EventContentStoryStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
 
-
     public class EventContentSubStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class EventContentTreasureBoardHistory
     {
@@ -1468,13 +1393,11 @@ namespace SCHALE.Common.Database
         public List<EventContentTreasureObject> Treasures { get; set; }
     }
 
-
     public class EventContentTreasureCell
     {
         public int X { get; set; }
         public int Y { get; set; }
     }
-
 
     public class EventContentTreasureHistoryDB
     {
@@ -1490,7 +1413,6 @@ namespace SCHALE.Common.Database
         //public EventContentTreasureRoundInfo TreasureRoundInfo { get; set; }
     }
 
-
     public class EventContentTreasureObject
     {
         public long ServerId { get; set; }
@@ -1500,7 +1422,6 @@ namespace SCHALE.Common.Database
         public List<EventContentTreasureCell> Cells { get; set; }
     }
 
-
     public class EventContentTreasureSaveBoard
     {
         public long VariationId { get; set; }
@@ -1508,13 +1429,11 @@ namespace SCHALE.Common.Database
         public List<EventContentTreasureObject> TreasureObjects { get; set; }
     }
 
-
     public class EventInfoDB
     {
         public long EventId { get; set; }
         public uint ImageNameHash { get; set; }
     }
-
 
     public class EventRewardIncreaseDB
     {
@@ -1523,7 +1442,6 @@ namespace SCHALE.Common.Database
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
     }
-
 
     public class FieldStageSaveDB
     {
@@ -1573,16 +1491,21 @@ namespace SCHALE.Common.Database
         public long EmblemId { get; set; }
     }
 
-
     public class FurnitureDB : ConsumableItemBaseDB
     {
-        public override ParcelType Type { get => ParcelType.Furniture; }
+        public override ParcelType Type
+        {
+            get => ParcelType.Furniture;
+        }
 
         [JsonIgnore]
         public override IEnumerable<ParcelInfo> ParcelInfos { get; }
 
         [JsonIgnore]
-        public override bool CanConsume { get => false; }
+        public override bool CanConsume
+        {
+            get => false;
+        }
 
         public FurnitureLocation Location { get; set; }
         public long CafeDBId { get; set; }
@@ -1591,7 +1514,6 @@ namespace SCHALE.Common.Database
         public float Rotation { get; set; }
         public long ItemDeploySequence { get; set; }
     }
-
 
     public class FurnitureExcelData
     {
@@ -1605,17 +1527,18 @@ namespace SCHALE.Common.Database
         public FurnitureExcel _excel { get; set; }
     }
 
-
     public class GachaLogDB
     {
         public long CharacterId { get; set; }
     }
 
-
     public class GearDB : ParcelBase
     {
         [NotMapped]
-        public override ParcelType Type { get => ParcelType.CharacterGear; }
+        public override ParcelType Type
+        {
+            get => ParcelType.CharacterGear;
+        }
 
         [NotMapped]
         [JsonIgnore]
@@ -1630,7 +1553,6 @@ namespace SCHALE.Common.Database
         [Key]
         public long ServerId { get; set; }
 
-
         public long UniqueId { get; set; }
         public int Level { get; set; }
         public long Exp { get; set; }
@@ -1639,7 +1561,10 @@ namespace SCHALE.Common.Database
         public long BoundCharacterServerId { get; set; }
 
         [NotMapped]
-        public EquipmentDB ToEquipmentDB { get {
+        public EquipmentDB ToEquipmentDB
+        {
+            get
+            {
                 return new()
                 {
                     IsNew = true,
@@ -1650,10 +1575,9 @@ namespace SCHALE.Common.Database
                     StackCount = 1,
                     Exp = Exp
                 };
-            } 
+            }
         }
     }
-
 
     public class GearTierUpRequestDB
     {
@@ -1661,7 +1585,6 @@ namespace SCHALE.Common.Database
         public long AfterTier { get; set; }
         public List<SelectTicketReplaceInfo> ReplaceInfos { get; set; }
     }
-
 
     public class GuideMissionSeasonDB
     {
@@ -1674,7 +1597,6 @@ namespace SCHALE.Common.Database
         public DateTime? CollectionItemReceiveDate { get; set; }
     }
 
-
     public class IConsumableItemBaseExcel
     {
         public ParcelType Type { get; set; }
@@ -1686,7 +1608,6 @@ namespace SCHALE.Common.Database
         public IReadOnlyDictionary<CraftNodeTier, long> CraftQualityDict { get; set; }
     }
 
-
     public class IdCardBackgroundDB
     {
         public ParcelType Type { get; set; }
@@ -1694,7 +1615,6 @@ namespace SCHALE.Common.Database
         public long UniqueId { get; set; }
         public IEnumerable<ParcelInfo> ParcelInfos { get; set; }
     }
-
 
     public class ItemDB : ConsumableItemBaseDB
     {
@@ -1715,7 +1635,6 @@ namespace SCHALE.Common.Database
         public bool IsLocked { get; set; }
     }
 
-
     public class ItemExcelData
     {
         public ParcelType Type { get; set; }
@@ -1727,7 +1646,6 @@ namespace SCHALE.Common.Database
         public IReadOnlyDictionary<CraftNodeTier, long> CraftQualityDict { get; set; }
         public ItemExcel _excel { get; set; }
     }
-
 
     public class MailDB
     {
@@ -1744,10 +1662,12 @@ namespace SCHALE.Common.Database
         public List<ParcelInfo> RemainParcelInfos { get; set; }
     }
 
-
     public class MemoryLobbyDB : ParcelBase
     {
-        public override ParcelType Type { get => ParcelType.MemoryLobby; }
+        public override ParcelType Type
+        {
+            get => ParcelType.MemoryLobby;
+        }
 
         [NotMapped]
         [JsonIgnore]
@@ -1775,7 +1695,6 @@ namespace SCHALE.Common.Database
         public bool IsFullCombo { get; set; }
     }
 
-
     public class MiniGameResult
     {
         public EventContentType ContentType { get; set; }
@@ -1790,7 +1709,6 @@ namespace SCHALE.Common.Database
         public long CriticalCount { get; set; }
     }
 
-
     public class MiniGameShootingHistoryDB
     {
         public long EventContentId { get; set; }
@@ -1800,7 +1718,6 @@ namespace SCHALE.Common.Database
         public bool IsClearToday { get; set; }
     }
 
-
     public class MissionHistoryDB
     {
         public long ServerId { get; set; }
@@ -1809,7 +1726,6 @@ namespace SCHALE.Common.Database
         public DateTime CompleteTime { get; set; }
         public bool Expired { get; set; }
     }
-
 
     public class MissionProgressDB
     {
@@ -1829,7 +1745,6 @@ namespace SCHALE.Common.Database
         public Dictionary<long, long> ProgressParameters { get; set; } = [];
     }
 
-
     public class MissionSnapshot
     {
         public long AccountId { get; set; }
@@ -1840,7 +1755,6 @@ namespace SCHALE.Common.Database
         public DailyResetCount WeeklyResetMissionPivotDate { get; set; }
     }
 
-
     public class MomoTalkChoiceDB
     {
         public long CharacterDBId { get; set; }
@@ -1848,7 +1762,6 @@ namespace SCHALE.Common.Database
         public long ChosenMessageId { get; set; }
         public DateTime ChosenDate { get; set; }
     }
-
 
     public class MomoTalkOutLineDB
     {
@@ -1859,7 +1772,6 @@ namespace SCHALE.Common.Database
         public DateTime LastUpdateDate { get; set; }
     }
 
-
     public class MonthlyProductPurchaseDB
     {
         public long ProductId { get; set; }
@@ -1868,7 +1780,6 @@ namespace SCHALE.Common.Database
         public DateTime? RewardEndDate { get; set; }
         public ProductTagType ProductTagType { get; set; }
     }
-
 
     public class MultiFloorRaidDB
     {
@@ -1884,14 +1795,12 @@ namespace SCHALE.Common.Database
         public List<ParcelInfo> TotalReceivedRewards { get; set; }
     }
 
-
     public class MultiSweepPresetDB
     {
         public long PresetId { get; set; }
         public string PresetName { get; set; }
         public IEnumerable<long> StageIds { get; set; }
     }
-
 
     public class OpenConditionDB
     {
@@ -1910,13 +1819,11 @@ namespace SCHALE.Common.Database
         public long OpenedCafeId { get; set; }
     }
 
-
     public class PotentialGrowthRequestDB
     {
         public PotentialStatBonusRateType Type { get; set; }
         public int Level { get; set; }
     }
-
 
     public class ProductPurchaseCountDB
     {
@@ -1929,7 +1836,6 @@ namespace SCHALE.Common.Database
         public DateTime ResetDate { get; set; }
     }
 
-
     public class PurchaseCountDB
     {
         public long ShopCashId { get; set; }
@@ -1938,7 +1844,6 @@ namespace SCHALE.Common.Database
         public DateTime? PurchaseDate { get; set; }
         public DateTime? ManualResetDate { get; set; }
     }
-
 
     public class PurchaseOrderDB
     {
@@ -1972,7 +1877,6 @@ namespace SCHALE.Common.Database
         public List<long> SubPartsHPs { get; set; }
     }
 
-
     public class RaidBossDB
     {
         public ContentType ContentType { get; set; }
@@ -1980,7 +1884,6 @@ namespace SCHALE.Common.Database
         public long BossCurrentHP { get; set; }
         public long BossGroggyPoint { get; set; }
     }
-
 
     public class RaidCharacterDB
     {
@@ -2010,7 +1913,7 @@ namespace SCHALE.Common.Database
         }
     }
 
-        public class RaidDB
+    public class RaidDB
     {
         public RaidMemberDescription Owner { get; set; }
         public ContentType ContentType { get; set; }
@@ -2037,7 +1940,6 @@ namespace SCHALE.Common.Database
         public bool ClanAssistUsed { get; set; }
     }
 
-
     public class RaidDetailDB
     {
         public long RaidUniqueId { get; set; }
@@ -2045,14 +1947,12 @@ namespace SCHALE.Common.Database
         public List<RaidPlayerInfoDB> DamageTable { get; set; }
     }
 
-
     public class RaidGiveUpDB
     {
         public long Ranking { get; set; }
         public long RankingPoint { get; set; }
         public long BestRankingPoint { get; set; }
     }
-
 
     public class RaidLimitedRewardHistoryDB
     {
@@ -2062,7 +1962,6 @@ namespace SCHALE.Common.Database
         public long RewardId { get; set; }
         public DateTime ReceiveDate { get; set; }
     }
-
 
     public abstract class RaidLobbyInfoDB
     {
@@ -2090,14 +1989,12 @@ namespace SCHALE.Common.Database
         public Dictionary<int, bool> RemainFailCompensation { get; set; }
     }
 
-
     public class RaidParticipateCharactersDB
     {
         public long RaidServerId { get; set; }
         public long AccountServerId { get; set; }
         public List<long> ParticipateCharacterServerIds { get; set; }
     }
-
 
     public class RaidPlayerInfoDB
     {
@@ -2113,7 +2010,6 @@ namespace SCHALE.Common.Database
         public long? AccountLevel { get; set; }
     }
 
-
     public class RaidRankingInfo
     {
         public long SeasonId { get; set; }
@@ -2123,14 +2019,12 @@ namespace SCHALE.Common.Database
         public double ScoreDetail { get; set; }
     }
 
-
     public class RaidSeasonHistoryDB
     {
         public long SeasonServerId { get; set; }
         public DateTime ReceiveDateTime { get; set; }
         public long SeasonRewardGauage { get; set; }
     }
-
 
     public class RaidSeasonManageDB
     {
@@ -2141,7 +2035,6 @@ namespace SCHALE.Common.Database
         public DateTime UpdateDate { get; set; }
     }
 
-
     public class RaidSeasonPointRewardHistoryDB
     {
         public ContentType ContentType { get; set; }
@@ -2150,7 +2043,6 @@ namespace SCHALE.Common.Database
         public long LastReceivedSeasonRewardId { get; set; }
         public DateTime SeasonRewardReceiveDate { get; set; }
     }
-
 
     public class RaidSeasonRankingHistoryDB
     {
@@ -2162,7 +2054,6 @@ namespace SCHALE.Common.Database
         public int Tier { get; set; }
         public DateTime ReceivedDate { get; set; }
     }
-
 
     public class RaidTeamSettingDB
     {
@@ -2176,7 +2067,6 @@ namespace SCHALE.Common.Database
         public long TSSInteractionUniqueId { get; set; }
         public long LeaderCharacterUniqueId { get; set; }
     }
-
 
     public class RaidUserDB
     {
@@ -2192,13 +2082,11 @@ namespace SCHALE.Common.Database
         public AccountAttachmentDB AccountAttachmentDB { get; set; }
     }
 
-
     public class ResetableContentId
     {
         public ResetContentType Type { get; set; }
         public long Mapped { get; set; }
     }
-
 
     public class ResetableContentValueDB
     {
@@ -2206,7 +2094,6 @@ namespace SCHALE.Common.Database
         public long ContentValue { get; set; }
         public DateTime LastUpdateTime { get; set; }
     }
-
 
     public class ScenarioGroupHistoryDB
     {
@@ -2218,7 +2105,6 @@ namespace SCHALE.Common.Database
         public bool IsReturn { get; set; }
         public bool IsPermanent { get; set; }
     }
-
 
     public class ScenarioHistoryDB
     {
@@ -2235,7 +2121,6 @@ namespace SCHALE.Common.Database
         public DateTime ClearDateTime { get; set; }
     }
 
-
     public class SchoolDungeonStageHistoryDB
     {
         public long AccountServerId { get; set; }
@@ -2248,12 +2133,10 @@ namespace SCHALE.Common.Database
         public bool[] StarFlags { get; set; }
     }
 
-
     public class SchoolDungeonStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class SelectGachaSnapshotDB
     {
@@ -2265,7 +2148,6 @@ namespace SCHALE.Common.Database
         public long? PickedIndex { get; set; }
     }
 
-
     public class SelectTicketReplaceInfo
     {
         public ParcelType MaterialType { get; set; }
@@ -2274,14 +2156,12 @@ namespace SCHALE.Common.Database
         public int Amount { get; set; }
     }
 
-
     public class SessionDB
     {
         public SessionKey SessionKey { get; set; }
         public DateTime LastConnect { get; set; }
         public int ConnectionTime { get; set; }
     }
-
 
     //public class SessionKey {
     //	public long AccountServerId { get; set; }
@@ -2298,13 +2178,11 @@ namespace SCHALE.Common.Database
         public DateTime EndTime { get; set; }
     }
 
-
     public class ShopEligmaHistoryDB
     {
         public long CharacterUniqueId { get; set; }
         public long PurchaseCount { get; set; }
     }
-
 
     public class ShopFreeRecruitHistoryDB
     {
@@ -2312,7 +2190,6 @@ namespace SCHALE.Common.Database
         public int RecruitCount { get; set; }
         public DateTime LastUpdateDate { get; set; }
     }
-
 
     public class ShopInfoDB
     {
@@ -2324,7 +2201,6 @@ namespace SCHALE.Common.Database
         public DateTime? LastAutoRefreshDate { get; set; }
         public List<ShopProductDB> ShopProductList { get; set; }
     }
-
 
     public class ShopProductDB
     {
@@ -2339,7 +2215,6 @@ namespace SCHALE.Common.Database
         //public ShopProductType ProductType { get; set; }
     }
 
-
     public class ShopRecruitDB
     {
         public long Id { get; set; }
@@ -2347,7 +2222,6 @@ namespace SCHALE.Common.Database
         public DateTime SalesEndDate { get; set; }
         public DateTime UpdateDate { get; set; }
     }
-
 
     public class SingleRaidUserDB
     {
@@ -2475,14 +2349,12 @@ namespace SCHALE.Common.Database
         public List<SelectTicketReplaceInfo> ReplaceInfos { get; set; }
     }
 
-
     public class SkipHistoryDB
     {
         public long AccountServerId { get; set; }
         public int Prologue { get; set; }
         public Dictionary<int, int> Tutorial { get; set; }
     }
-
 
     public class StickerBookDB
     {
@@ -2491,10 +2363,12 @@ namespace SCHALE.Common.Database
         public IEnumerable<StickerDB> UsedStickerDBs { get; set; }
     }
 
-
     public class StickerDB : ParcelBase, IEquatable<StickerDB>
     {
-        public override ParcelType Type { get => ParcelType.Sticker; }
+        public override ParcelType Type
+        {
+            get => ParcelType.Sticker;
+        }
 
         [JsonIgnore]
         public override IEnumerable<ParcelInfo> ParcelInfos { get; }
@@ -2507,19 +2381,16 @@ namespace SCHALE.Common.Database
         }
     }
 
-
     public class StoryStrategyStageSaveDB
     {
         public ContentType ContentType { get; set; }
     }
-
 
     public class StrategyObjectHistoryDB
     {
         public long AccountId { get; set; }
         public long StrategyObjectId { get; set; }
     }
-
 
     public class TimeAttackDungeonBattleHistoryDB
     {
@@ -2533,7 +2404,6 @@ namespace SCHALE.Common.Database
         public List<TimeAttackDungeonCharacterDB> SupportCharacterDBs { get; set; }
     }
 
-
     public class TimeAttackDungeonCharacterDB
     {
         public long ServerId { get; set; }
@@ -2546,14 +2416,12 @@ namespace SCHALE.Common.Database
         public bool IsAssist { get; set; }
     }
 
-
     public class TimeAttackDungeonRewardHistoryDB
     {
         public DateTime Date { get; set; }
         public TimeAttackDungeonRoomDB RoomDB { get; set; }
         public bool IsSweep { get; set; }
     }
-
 
     public class TimeAttackDungeonRoomDB
     {
@@ -2573,7 +2441,6 @@ namespace SCHALE.Common.Database
         public bool IsPlayCountOver { get; set; }
     }
 
-
     public class ToastDB
     {
         public long UniqueId { get; set; }
@@ -2585,18 +2452,19 @@ namespace SCHALE.Common.Database
         public int Delay { get; set; }
     }
 
-
     public class VisitingCharacterDB
     {
         public long UniqueId { get; set; }
         public long ServerId { get; set; }
     }
 
-
     public class WeaponDB : ParcelBase
     {
         [NotMapped]
-        public override ParcelType Type { get => ParcelType.CharacterWeapon; }
+        public override ParcelType Type
+        {
+            get => ParcelType.CharacterWeapon;
+        }
 
         [NotMapped]
         [JsonIgnore]
@@ -2619,7 +2487,6 @@ namespace SCHALE.Common.Database
         public bool IsLocked { get; set; }
     }
 
-
     public class WeekDungeonSaveDB
     {
         public ContentType ContentType { get; set; }
@@ -2627,7 +2494,6 @@ namespace SCHALE.Common.Database
         public int Seed { get; set; }
         public int Sequence { get; set; }
     }
-
 
     public class WeekDungeonStageHistoryDB
     {
@@ -2637,13 +2503,11 @@ namespace SCHALE.Common.Database
         public bool IsCleardEver { get; set; }
     }
 
-
     public class WorldRaidBossDamageRatio
     {
         public ContentsChangeType ContentsChangeType { get; set; }
         public BasisPoint DamageRatio { get; set; }
     }
-
 
     public class WorldRaidBossGroup
     {
@@ -2653,14 +2517,12 @@ namespace SCHALE.Common.Database
         public DateTime EliminateTime { get; set; }
     }
 
-
     public class WorldRaidBossListInfoDB
     {
         public long GroupId { get; set; }
         public WorldRaidWorldBossDB WorldBossDB { get; set; }
         public List<WorldRaidLocalBossDB> LocalBossDBs { get; set; }
     }
-
 
     public class WorldRaidClearHistoryDB
     {
