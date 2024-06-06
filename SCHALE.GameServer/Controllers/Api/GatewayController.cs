@@ -11,25 +11,21 @@ using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
 namespace SCHALE.GameServer.Controllers.Api
 {
     [Route("/api/[controller]")]
-    public class GatewayController : ControllerBase
+    public class GatewayController(
+        IProtocolHandlerFactory _protocolHandlerFactory,
+        ILogger<GatewayController> _logger
+    ) : ControllerBase
     {
+        private static readonly JsonSerializerOptions stringEnumOptions =
+            new() { Converters = { new JsonStringEnumConverter() }, };
         private static readonly JsonSerializerOptions jsonOptions =
             new() // ignore null or fields not set, if this breaks anything, remove it, idk if it does but it makes the pcap logs look more readable
             {
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
             };
 
-        private readonly IProtocolHandlerFactory protocolHandlerFactory;
-        private readonly ILogger<GatewayController> logger;
-
-        public GatewayController(
-            IProtocolHandlerFactory _protocolHandlerFactory,
-            ILogger<GatewayController> _logger
-        )
-        {
-            protocolHandlerFactory = _protocolHandlerFactory;
-            logger = _logger;
-        }
+        private readonly IProtocolHandlerFactory protocolHandlerFactory = _protocolHandlerFactory;
+        private readonly ILogger<GatewayController> logger = _logger;
 
         [HttpPost]
         public IResult GatewayRequest()
@@ -83,7 +79,8 @@ namespace SCHALE.GameServer.Controllers.Api
                 logger.LogDebug(payloadStr);
 
                 var payload = (
-                    JsonSerializer.Deserialize(payloadStr, requestType) as RequestPacket
+                    JsonSerializer.Deserialize(payloadStr, requestType, stringEnumOptions)
+                    as RequestPacket
                 )!;
 
                 var rsp = protocolHandlerFactory.Invoke(protocol, payload);

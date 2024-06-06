@@ -200,21 +200,19 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                     return new CharacterDB()
                     {
                         UniqueId = x.CharacterId,
-                        StarGrade = x.StarGrade,
-                        Level = x.Level,
-                        Exp = x.Exp,
-                        FavorRank = x.FavorRank,
-                        FavorExp = x.FavorExp,
-                        PublicSkillLevel = 1,
-                        ExSkillLevel = x.ExSkillLevel,
-                        PassiveSkillLevel = x.PassiveSkillLevel,
-                        ExtraPassiveSkillLevel = x.ExtraPassiveSkillLevel,
+                        StarGrade = 5,
+                        Level = 90,
+                        Exp = 0,
+                        FavorRank = 20,
+                        FavorExp = 0,
+                        PublicSkillLevel = 10,
+                        ExSkillLevel = 5,
+                        PassiveSkillLevel = 10,
+                        ExtraPassiveSkillLevel = 10,
                         LeaderSkillLevel = x.LeaderSkillLevel,
                         IsNew = true,
                         IsLocked = true,
-                        EquipmentServerIds = characterExcel is not null
-                            ? characterExcel.EquipmentSlot.Select(x => (long)0).ToList()
-                            : [0, 0, 0],
+                        EquipmentServerIds = [0, 0, 0],
                         PotentialStats =
                         {
                             { 1, 0 },

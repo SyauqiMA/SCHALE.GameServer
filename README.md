@@ -57,7 +57,7 @@ chmod 755 frida-server
 ### Inject Frida script
 
 > [!NOTE]  
-> Edit line 5 of [ba.js](./ba.js) to your own server IP.
+> Edit line 5 of [ba.js](./ba.js) to your own server IP. (Usually 192.168.x.x)
 
 > [!WARNING]  
 > Do this fast when you open ブルアカ and see the Yostar logo.
@@ -66,3 +66,7 @@ chmod 755 frida-server
 # in this repo
 frida -U "ブルアカ" -l ba.js --realm=emulated
 ```
+
+## Command
+
+Go to club and input `/help` to view command usage
