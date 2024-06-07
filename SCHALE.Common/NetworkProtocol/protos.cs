@@ -1,9 +1,10 @@
-#pragma warning disable CS8618
+
 
 using SCHALE.Common.Database;
-using System.Text.Json.Serialization;
 using SCHALE.Common.Parcel;
 using SCHALE.Common.FlatData;
+using MX.Logic.Battles.Summary;
+using Newtonsoft.Json;
 
 namespace SCHALE.Common.NetworkProtocol
 {
@@ -11221,5 +11222,3 @@ namespace SCHALE.Common.NetworkProtocol
         public long SeasonId { get; set; }
     }
 }
-
-#pragma warning restore CS8618

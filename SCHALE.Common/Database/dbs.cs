@@ -1,147 +1,15 @@
-#pragma warning disable CS8618
-
+using MX.Logic.Battles.Summary;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using SCHALE.Common.FlatData;
 using SCHALE.Common.NetworkProtocol;
 using SCHALE.Common.Parcel;
+using Newtonsoft.Json;
 
 namespace SCHALE.Common.Database
 {
     public class SingleRaidLobbyInfoDB : RaidLobbyInfoDB { }
-
-    public class RaidDamage
-    {
-        public int Index { get; set; }
-        public long GivenDamage { get; set; }
-        public long GivenGroggyPoint { get; set; }
-    }
-
-    public struct RaidBossResult : IEquatable<RaidBossResult>
-    {
-        [JsonIgnore]
-        public int Index { get; set; }
-
-        [JsonIgnore]
-        public long GivenDamage { get; set; }
-
-        [JsonIgnore]
-        public long GivenGroggyPoint { get; set; }
-
-        public RaidDamage RaidDamage { get; set; }
-
-        public long EndHpRateRawValue { readonly get; set; }
-
-        public long GroggyRateRawValue { readonly get; set; }
-
-        public int GroggyCount { readonly get; set; }
-
-        public List<long> SubPartsHPs { readonly get; set; }
-
-        public long AIPhase { readonly get; set; }
-
-        public bool Equals(RaidBossResult other)
-        {
-            return this.Index == other.Index;
-        }
-    }
-
-    public class RaidBossResultCollection : KeyedCollection<int, RaidBossResult>
-    {
-        [JsonIgnore]
-        public int LastIndex { get; set; }
-
-        [JsonIgnore]
-        public long TotalDamage { get; set; }
-
-        [JsonIgnore]
-        public long CurrentDamage { get; set; }
-
-        [JsonIgnore]
-        public long TotalGroggyPoint { get; set; }
-
-        [JsonIgnore]
-        public long CurrentGroggyPoint { get; set; }
-
-        [JsonIgnore]
-        public int TotalGroggyCount { get; set; }
-
-        protected override int GetKeyForItem(RaidBossResult item)
-        {
-            return item.Index;
-        }
-    }
-
-    public class RaidSummary
-    {
-        public long RaidSeasonId { get; set; }
-
-        public long GivenDamage { get; set; }
-
-        public int TotalGroggyCount { get; set; }
-
-        public int RaidBossIndex { get; set; }
-
-        public RaidBossResultCollection RaidBossResults { get; set; }
-    }
-
-    // Battle? probably need to implement these our selves
-    public class BattleSummary : IEquatable<BattleSummary>
-    {
-        public long HashKey { get; set; }
-
-        public bool IsBossBattle { get; set; }
-
-        //public BattleTypes BattleType { get; set; }
-
-        public long StageId { get; set; }
-
-        public long GroundId { get; set; }
-
-        //public GroupTag Winner { get; set; }
-
-        [JsonIgnore]
-        public bool IsPlayerWin { get; set; }
-
-        //public BattleEndType EndType { get; set; }
-
-        public int EndFrame { get; set; }
-
-        //public GroupSummary Group01Summary { get; set; }
-
-        //public GroupSummary Group02Summary { get; set; }
-
-        //public WeekDungeonSummary WeekDungeonSummary { get; set; }
-
-        public RaidSummary RaidSummary { get; set; }
-
-        //public ArenaSummary ArenaSummary { get; set; }
-
-        [JsonIgnore]
-        public TimeSpan EndTime { get; set; }
-
-        public int ContinueCount { get; set; }
-
-        public float ElapsedRealtime { get; set; }
-
-        [JsonIgnore]
-        public string FindGiftClearText { get; set; }
-
-        [JsonIgnore]
-        public long EventContentId { get; set; }
-
-        [JsonIgnore]
-        public long FixedEchelonId { get; set; }
-
-        public bool IsAbort { get; set; }
-
-        public bool Equals(BattleSummary? other)
-        {
-            return this.HashKey == other?.HashKey;
-        }
-    }
 
     public class TypedJsonWrapper { }
 
@@ -2531,5 +2399,3 @@ namespace SCHALE.Common.Database
         public DateTime RewardReceiveDate { get; set; }
     }
 }
-
-#pragma warning restore CS8618

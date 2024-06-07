@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS8618
-
+﻿
 using Newtonsoft.Json;
 using SCHALE.Common.Database;
 using SCHALE.Common.FlatData;
@@ -337,5 +336,3 @@ namespace SCHALE.Common.Parcel
         public long EliminateTicketC { get; set; }
     }
 }
-
-#pragma warning restore CS8618

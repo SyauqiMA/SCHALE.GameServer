@@ -1,9 +1,8 @@
 ﻿using System.IO.Compression;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SCHALE.Common.Crypto;
 using SCHALE.Common.NetworkProtocol;
 using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
@@ -16,13 +15,8 @@ namespace SCHALE.GameServer.Controllers.Api
         ILogger<GatewayController> _logger
     ) : ControllerBase
     {
-        private static readonly JsonSerializerOptions stringEnumOptions =
-            new() { Converters = { new JsonStringEnumConverter() }, };
-        private static readonly JsonSerializerOptions jsonOptions =
-            new() // ignore null or fields not set, if this breaks anything, remove it, idk if it does but it makes the pcap logs look more readable
-            {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-            };
+        private static readonly JsonSerializerSettings jsonOptions =
+            new() { DefaultValueHandling = DefaultValueHandling.Ignore };
 
         private readonly IProtocolHandlerFactory protocolHandlerFactory = _protocolHandlerFactory;
         private readonly ILogger<GatewayController> logger = _logger;
@@ -51,8 +45,8 @@ namespace SCHALE.GameServer.Controllers.Api
             try
             {
                 var payloadStr = Encoding.UTF8.GetString(payloadMs.ToArray());
-                var jsonNode = JsonSerializer.Deserialize<JsonNode>(payloadStr);
-                var protocol = (Protocol?)jsonNode?["Protocol"]?.GetValue<int?>() ?? Protocol.None;
+                var jsonNode = JObject.Parse(payloadStr);
+                var protocol = (Protocol?)(int?)jsonNode?["Protocol"] ?? Protocol.None;
 
                 logger.LogDebug("Protocol: {Protocol}", protocol.ToString());
                 logger.LogDebug("Protocol: {Protocol}", (int)protocol);
@@ -79,8 +73,7 @@ namespace SCHALE.GameServer.Controllers.Api
                 logger.LogDebug(payloadStr);
 
                 var payload = (
-                    JsonSerializer.Deserialize(payloadStr, requestType, stringEnumOptions)
-                    as RequestPacket
+                    JsonConvert.DeserializeObject(payloadStr, requestType) as RequestPacket
                 )!;
 
                 var rsp = protocolHandlerFactory.Invoke(protocol, payload);
@@ -102,7 +95,7 @@ namespace SCHALE.GameServer.Controllers.Api
                 return Results.Json(
                     new
                     {
-                        packet = JsonSerializer.Serialize(rsp, jsonOptions),
+                        packet = JsonConvert.SerializeObject(rsp, jsonOptions),
                         protocol = ((BasePacket)rsp).Protocol.ToString()
                     }
                 );
@@ -111,7 +104,7 @@ namespace SCHALE.GameServer.Controllers.Api
                 return Results.Json(
                     new
                     {
-                        packet = JsonSerializer.Serialize(
+                        packet = JsonConvert.SerializeObject(
                             new ErrorPacket()
                             {
                                 Reason = "Protocol not implemented (Server Error)",
@@ -128,7 +121,7 @@ namespace SCHALE.GameServer.Controllers.Api
                 return Results.Json(
                     new
                     {
-                        packet = JsonSerializer.Serialize(
+                        packet = JsonConvert.SerializeObject(
                             new ErrorPacket()
                             {
                                 Reason = string.IsNullOrEmpty(ex.Message)

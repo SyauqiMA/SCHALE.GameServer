@@ -1,1 +1,2 @@
-SCHALE.Common
+SCHALE.Common/**/*
+!SCHALE.Common/Database/MX/**/*
