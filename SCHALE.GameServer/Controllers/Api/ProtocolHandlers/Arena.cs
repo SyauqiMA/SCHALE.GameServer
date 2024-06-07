@@ -37,6 +37,7 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
         {
             var res = new ArenaCharacterDB
             {
+                ServerId = db.ServerId,
                 UniqueId = db.UniqueId,
                 StarGrade = db.StarGrade,
                 Level = db.Level,
