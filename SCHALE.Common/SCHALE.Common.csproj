@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="Database\MX\**\*.cs">
+      <NoWarn>CS8618</NoWarn>
+    </Compile>
+    <Compile Update="Database\dbs.cs">
+      <NoWarn>CS8618</NoWarn>
+    </Compile>
+    <Compile Update="NetworkProtocol\protos.cs">
+      <NoWarn>CS8618</NoWarn>
+    </Compile>
+    <Compile Update="Parcel\parcel.cs">
+      <NoWarn>CS8618</NoWarn>
+    </Compile>
     <PackageReference Include="Google.FlatBuffers" Version="24.3.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
