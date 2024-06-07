@@ -2,7 +2,6 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
-using SCHALE.GameServer.Controllers.Api.ProtocolHandlers;
 using Serilog;
 
 namespace SCHALE.GameServer.Utils
@@ -63,6 +62,13 @@ namespace SCHALE.GameServer.Utils
                 }
             }
             return output;
+        }
+
+        public static string GetLocalIPv4()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ip = host.AddressList.Last(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+            return ip.ToString();
         }
     }
 }

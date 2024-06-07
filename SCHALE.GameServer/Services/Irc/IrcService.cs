@@ -1,21 +1,23 @@
 ﻿using System.Net;
 using SCHALE.Common.Database;
-using Serilog;
 
 namespace SCHALE.GameServer.Services.Irc
 {
-    public class IrcService : BackgroundService
+    public class IrcService(
+        ILogger<IrcService> _logger,
+        SCHALEContext _context,
+        ExcelTableService excelTableService,
+        IConfiguration configuration
+    ) : BackgroundService
     {
-        private IrcServer server;
-
-        public IrcService(
-            ILogger<IrcService> _logger,
-            SCHALEContext _context,
-            ExcelTableService excelTableService
-        )
-        {
-            server = new IrcServer(IPAddress.Any, 6667, _logger, _context, excelTableService);
-        }
+        private readonly IrcServer server =
+            new(
+                IPAddress.Any,
+                int.Parse(configuration["IRC:Port"]!),
+                _logger,
+                _context,
+                excelTableService
+            );
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

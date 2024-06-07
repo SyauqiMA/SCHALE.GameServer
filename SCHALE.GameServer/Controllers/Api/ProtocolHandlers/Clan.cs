@@ -5,24 +5,18 @@ using SCHALE.GameServer.Utils;
 
 namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
 {
-    public class Clan : ProtocolHandlerBase
+    public class Clan(
+        IProtocolHandlerFactory protocolHandlerFactory,
+        ISessionKeyService _sessionKeyService,
+        SCHALEContext _context,
+        ExcelTableService _excelTableService,
+        IConfiguration _configuration
+    ) : ProtocolHandlerBase(protocolHandlerFactory)
     {
-        private readonly ISessionKeyService sessionKeyService;
-        private readonly SCHALEContext context;
-        private readonly ExcelTableService excelTableService;
-
-        public Clan(
-            IProtocolHandlerFactory protocolHandlerFactory,
-            ISessionKeyService _sessionKeyService,
-            SCHALEContext _context,
-            ExcelTableService _excelTableService
-        )
-            : base(protocolHandlerFactory)
-        {
-            sessionKeyService = _sessionKeyService;
-            context = _context;
-            excelTableService = _excelTableService;
-        }
+        private readonly ISessionKeyService sessionKeyService = _sessionKeyService;
+        private readonly SCHALEContext context = _context;
+        private readonly ExcelTableService excelTableService = _excelTableService;
+        private readonly IConfiguration configuration = _configuration;
 
         [ProtocolHandler(Protocol.Clan_Lobby)]
         public ResponsePacket CheckHandler(ClanLobbyRequest req)
@@ -33,8 +27,8 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
             {
                 IrcConfig = new()
                 {
-                    HostAddress = Config.Instance.IRCAddress,
-                    Port = Config.Instance.IRCPort,
+                    HostAddress = configuration["IRC:IP"] ?? Config.GetLocalIPv4(),
+                    Port = int.Parse(configuration["IRC:Port"]!),
                     Password = ""
                 },
                 AccountClanDB = new()
