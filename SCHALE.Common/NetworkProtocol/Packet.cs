@@ -1,5 +1,6 @@
 ﻿using SCHALE.Common.Database;
 using SCHALE.Common.FlatData;
+using SCHALE.Common.Utils;
 
 namespace SCHALE.Common.NetworkProtocol
 {
@@ -35,7 +36,7 @@ namespace SCHALE.Common.NetworkProtocol
     // TODO: Fix properties
     public abstract class ResponsePacket : BasePacket
     {
-        public long ServerTimeTicks { get; set; } = DateTimeOffset.Now.Ticks;
+        public long ServerTimeTicks { get; set; } = TimeManager.KoreaNow.Ticks;
         public ServerNotificationFlag ServerNotification { get; set; }
         public List<MissionProgressDB> MissionProgressDBs { get; set; }
         public Dictionary<long, List<MissionProgressDB>> EventMissionProgressDBDict { get; set; }

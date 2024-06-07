@@ -6,6 +6,7 @@ using SCHALE.Common.FlatData;
 using SCHALE.Common.NetworkProtocol;
 using SCHALE.Common.Parcel;
 using Newtonsoft.Json;
+using MX.Logic.Data;
 
 namespace SCHALE.Common.Database
 {
@@ -1720,17 +1721,6 @@ namespace SCHALE.Common.Database
         public long PurchaseOrderId { get; set; }
     }
 
-    public class RaidMemberCollection : KeyedCollection<long, RaidMemberDescription>
-    {
-        public long TotalDamage { get; set; }
-
-        protected override long GetKeyForItem(RaidMemberDescription item)
-        {
-            return -1;
-        }
-        //public IEnumerable<RaidDamage> RaidDamages { get; set; }
-    }
-
     public class RaidBattleDB
     {
         public ContentType ContentType { get; set; }
@@ -1765,20 +1755,6 @@ namespace SCHALE.Common.Database
         public bool HasWeapon { get; set; }
         public int WeaponStarGrade { get; set; }
         public long CostumeId { get; set; }
-    }
-
-    public class RaidMemberDescription : IEquatable<RaidMemberDescription>
-    {
-        public long AccountId { get; set; }
-
-        public string AccountName { get; set; }
-
-        public long CharacterId { get; set; }
-
-        public bool Equals(RaidMemberDescription? other)
-        {
-            return this.AccountId == other?.AccountId;
-        }
     }
 
     public class RaidDB

@@ -449,6 +449,12 @@ namespace SCHALE.GameServer.Controllers.Api.ProtocolHandlers
                             AccountServerId = account.ServerId,
                             ScenarioGroupUqniueId = 300,
                             ScenarioType = 3
+                        },
+                        new() // raid
+                        {
+                            AccountServerId = account.ServerId,
+                            ScenarioGroupUqniueId = 200,
+                            ScenarioType = 2
                         }
                     ]
                 },
