@@ -29,18 +29,8 @@ namespace SCHALE.GameServer.Utils
                 case "SQLServer":
                     services.AddDbContext<SCHALEContext>(
                         opt =>
-                            opt.UseSqlServer(
-                                    conf.GetConnectionString("SQLServer")
-                                        ?? throw NoConnectionStringException,
-                                    actions =>
-                                    {
-                                        actions.EnableRetryOnFailure(
-                                            5,
-                                            TimeSpan.FromSeconds(10),
-                                            null
-                                        );
-                                    }
-                                )
+                            opt
+                       .UseSqlServer(conf.GetConnectionString("SQLServer") ?? throw NoConnectionStringException)
                                 .UseLazyLoadingProxies(),
                         ServiceLifetime.Singleton,
                         ServiceLifetime.Singleton
